@@ -1,0 +1,13 @@
+# =============================================================================
+# /etc/hosts snippet — OPTIONAL
+#
+# You do NOT need this: the ssh_config examples target the nodes by IP, and the
+# scripts resolve LAN addresses from NODE_IPS in cluster.env. Add these lines
+# only if you want the bare names to resolve everywhere (e.g. for curl, ping or
+# ad-hoc tooling on a node). Append them to /etc/hosts on each machine that
+# needs name resolution, then verify with:  getent hosts zabeth22
+# =============================================================================
+
+172.26.145.71   zabeth21
+172.26.145.72   zabeth22
+172.26.145.73   zabeth23

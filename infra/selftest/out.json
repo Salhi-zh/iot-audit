@@ -1,0 +1,7 @@
+{
+  "model": "qwen2.5-vl-7b",
+  "mean_latency_s": 1.234,
+  "json_valid_rate": 0.97,
+  "throughput_img_s": 2.43,
+  "num_images": 200
+}

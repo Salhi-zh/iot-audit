@@ -1,0 +1,99 @@
+[project]
+name = "iot-audit"
+version = "0.1.0"
+description = "Reconnaissance d'objets connectes pour audit de securite IoT (triage produit-level)"
+readme = "README.md"
+requires-python = ">=3.12"
+license = { text = "Proprietary — travail academique" }
+
+# Dependances du chemin chaud du systeme (voir docs/03, docs/04).
+# Volontairement court : une dependance non justifiee est une dette.
+dependencies = [
+    "cryptography>=42.0", # signatures asymétriques Ed25519 scellant les rapports (D11)
+    "ijson>=3.3",        # streaming des flux NVD (.json.gz) sans charger l'annee en RAM
+    "rapidfuzz>=3.9",    # similarite de jetons du matcher CPE (repli difflib si absent)
+]
+
+[project.optional-dependencies]
+# Bancs de mesure du corpus (OCR, images). Pas necessaires au chemin chaud.
+corpus = [
+    "numpy>=2.0",
+    "pillow>=11.0",
+    "opencv-python-headless>=4.10",
+]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.6",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["iot_audit"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py312"
+exclude = [
+    "iot_audit/corpus/audit_grading.py",  # vendored, byte-frozen (see VENDORED-audit-grading.md)
+]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM"]
+ignore = [
+    "E501",  # la longueur est geree par formatter, pas bloquante en lint
+]
+
+# Fichiers SCÉLLÉS par empreinte sha256 dans
+# evidence/2026-09-15/contrat-v3-et-nodes.json (octets du commit G0,
+# f36ca41f…) : runner3-v3.py, runner3b-v3-640.py, probe-token-budget.py,
+# make_runner_v3.py. runner2-v2.py est la source de régénération de ces
+# scellés (« régénérer runner3-v3.py redonne le même sha256 », vérifié par
+# tests/test_evidence_seals.py).
+# Leurs violations font partie des octets scellés : les corriger — même sans
+# effet comportemental — casserait la vérification des empreintes. Comportement
+# figé comme les preuves produites. Tout le reste de corpus/ est lint-propre :
+# le boilerplate hérité par runner4→7 et probe-divergence.py a été normalisé
+# dans les générateurs (make_runner_v4 section 4, make_runner_v6/_v7,
+# make_probe_divergence) pour que la régénération reste exacte.
+# Détail et commandes de vérification : corpus/NOTE-lint-2026-10-07.md.
+[tool.ruff.lint.per-file-ignores]
+"corpus/runner2-v2.py" = ["E401", "E702", "F401", "I001", "UP031"]
+"corpus/runner3-v3.py" = ["E401", "E702", "F401", "I001", "UP031"]
+"corpus/runner3b-v3-640.py" = ["E401", "E702", "F401", "I001", "UP031"]
+"corpus/probe-token-budget.py" = ["E401", "I001", "UP031"]
+"corpus/make_runner_v3.py" = ["F541"]
+
+[tool.mypy]
+python_version = "3.12"
+# Périmètre : le chemin fonctionnel du système (triage, confiance, orchestration,
+# journal, scellement) et le vérificateur tiers. Le code de mesure du corpus
+# (`iot_audit/corpus`, `benchmarks/`) reste hors du contrôle de types : il est
+# jetable et non déployé.
+files = [
+    "iot_audit/contracts.py",
+    "iot_audit/modules",
+    "iot_audit/pipeline",
+    "iot_audit/storage",
+    "iot_audit/text.py",
+    "iot_audit/ui",
+    "verify_report.py",
+]
+disallow_untyped_defs = true
+check_untyped_defs = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+no_implicit_optional = true
+show_error_codes = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q --strict-markers"
+markers = [
+    "integration: SQLite temporaire + fixtures, sans GPU et sans reseau",
+    "slow: ingestion complete, hors CI par defaut",
+    "live: requiert un vrai serveur vLLM (manuel)",
+]

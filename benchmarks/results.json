@@ -1,0 +1,581 @@
+{
+  "run": "v4 (cap 640, finish_reason natif, temperature 0)",
+  "n_images_all": 144,
+  "n_images_rendered": 144,
+  "dropped": {
+    "n": 0,
+    "finish_reason": []
+  },
+  "per_image": {
+    "brand": {
+      "k": 46,
+      "n": 144,
+      "rate": 0.3194444444444444,
+      "ci95": [
+        0.2488,
+        0.3994
+      ]
+    },
+    "model_A": {
+      "k": 64,
+      "n": 144,
+      "rate": 0.4444444444444444,
+      "ci95": [
+        0.3658,
+        0.526
+      ]
+    },
+    "model_P": {
+      "k": 79,
+      "n": 144,
+      "rate": 0.5486111111111112,
+      "ci95": [
+        0.4671,
+        0.6276
+      ]
+    },
+    "category": {
+      "k": 122,
+      "n": 144,
+      "rate": 0.8472222222222222,
+      "ci95": [
+        0.7795,
+        0.8969
+      ]
+    },
+    "brand_and_model": {
+      "k": 19,
+      "n": 144,
+      "rate": 0.13194444444444445,
+      "ci95": [
+        0.0861,
+        0.1969
+      ]
+    }
+  },
+  "basis": {
+    "label": {
+      "n": 80,
+      "model_A": {
+        "k": 22,
+        "n": 80,
+        "rate": 0.275,
+        "ci95": [
+          0.1892,
+          0.3814
+        ]
+      },
+      "model_P": {
+        "k": 37,
+        "n": 80,
+        "rate": 0.4625,
+        "ci95": [
+          0.3575,
+          0.571
+        ]
+      },
+      "category": {
+        "k": 61,
+        "n": 80,
+        "rate": 0.7625,
+        "ci95": [
+          0.6586,
+          0.8424
+        ]
+      }
+    },
+    "visual": {
+      "n": 64,
+      "model_A": {
+        "k": 42,
+        "n": 64,
+        "rate": 0.65625,
+        "ci95": [
+          0.534,
+          0.7608
+        ]
+      },
+      "model_P": {
+        "k": 42,
+        "n": 64,
+        "rate": 0.65625,
+        "ci95": [
+          0.534,
+          0.7608
+        ]
+      },
+      "category": {
+        "k": 61,
+        "n": 64,
+        "rate": 0.953125,
+        "ci95": [
+          0.871,
+          0.9839
+        ]
+      }
+    },
+    "_verdict_par_critere": {
+      "model_A": "INFORMATIF",
+      "model_P": "NON TRANCHE"
+    },
+    "_informatif": true,
+    "_sensible_au_critere": true
+  },
+  "per_category": {
+    "ip_camera": {
+      "k": 1,
+      "n": 4,
+      "rate": 0.25,
+      "ci95": [
+        0.0456,
+        0.6994
+      ]
+    },
+    "router_ap": {
+      "k": 29,
+      "n": 41,
+      "rate": 0.7073170731707317,
+      "ci95": [
+        0.5552,
+        0.8239
+      ]
+    },
+    "smart_bulb": {
+      "k": 4,
+      "n": 5,
+      "rate": 0.8,
+      "ci95": [
+        0.3755,
+        0.9638
+      ]
+    },
+    "smart_plug": {
+      "k": 12,
+      "n": 12,
+      "rate": 1.0,
+      "ci95": [
+        0.7575,
+        1.0
+      ]
+    },
+    "smart_speaker": {
+      "k": 76,
+      "n": 82,
+      "rate": 0.926829268292683,
+      "ci95": [
+        0.8494,
+        0.966
+      ]
+    }
+  },
+  "confusion": {
+    "ip_camera -> ip camera": 1,
+    "ip_camera -> router ap": 1,
+    "ip_camera -> smart speaker": 2,
+    "router_ap -> other": 8,
+    "router_ap -> router ap": 29,
+    "router_ap -> smart speaker": 4,
+    "smart_bulb -> smart bulb": 4,
+    "smart_bulb -> smart speaker": 1,
+    "smart_plug -> smart plug": 12,
+    "smart_speaker -> other": 6,
+    "smart_speaker -> smart speaker": 76
+  },
+  "strata": {
+    "forum": {
+      "n_objects": 11,
+      "model_A": {
+        "k": 0,
+        "n": 12,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.2425
+        ]
+      },
+      "category": {
+        "k": 1,
+        "n": 12,
+        "rate": 0.08333333333333333,
+        "ci95": [
+          0.0149,
+          0.3539
+        ]
+      }
+    },
+    "official": {
+      "n_objects": 3,
+      "model_A": {
+        "k": 0,
+        "n": 3,
+        "rate": 0.0,
+        "ci95": [
+          0.0,
+          0.5615
+        ]
+      },
+      "category": {
+        "k": 3,
+        "n": 3,
+        "rate": 1.0,
+        "ci95": [
+          0.4385,
+          1.0
+        ]
+      }
+    },
+    "review": {
+      "n_objects": 34,
+      "model_A": {
+        "k": 64,
+        "n": 129,
+        "rate": 0.49612403100775193,
+        "ci95": [
+          0.4112,
+          0.5813
+        ]
+      },
+      "category": {
+        "k": 118,
+        "n": 129,
+        "rate": 0.9147286821705426,
+        "ci95": [
+          0.8538,
+          0.9517
+        ]
+      }
+    }
+  },
+  "text_visible": {
+    "0": {
+      "model_A": {
+        "k": 42,
+        "n": 97,
+        "rate": 0.4329896907216495,
+        "ci95": [
+          0.3388,
+          0.5323
+        ]
+      },
+      "category": {
+        "k": 75,
+        "n": 97,
+        "rate": 0.7731958762886598,
+        "ci95": [
+          0.6804,
+          0.8452
+        ]
+      }
+    },
+    "1": {
+      "model_A": {
+        "k": 22,
+        "n": 47,
+        "rate": 0.46808510638297873,
+        "ci95": [
+          0.3333,
+          0.6077
+        ]
+      },
+      "category": {
+        "k": 47,
+        "n": 47,
+        "rate": 1.0,
+        "ci95": [
+          0.9244,
+          1.0
+        ]
+      }
+    }
+  },
+  "object_level": {
+    "source": "iot_audit.corpus.metrics (grade + summarize + object_results)",
+    "rules": {
+      "conservative": {
+        "k": 10,
+        "n": 48,
+        "rate": 0.20833333333333334,
+        "ci95": [
+          0.1173,
+          0.3426
+        ],
+        "verdicts": {
+          "brand_no_category_ok": 17,
+          "exact": 10,
+          "faux": 12,
+          "brand_ok_model_no": 9
+        }
+      },
+      "answered": {
+        "k": 15,
+        "n": 48,
+        "rate": 0.3125,
+        "ci95": [
+          0.1995,
+          0.4533
+        ],
+        "verdicts": {
+          "exact": 15,
+          "brand_no_category_ok": 11,
+          "brand_ok_model_no": 10,
+          "faux": 12
+        }
+      }
+    },
+    "n_objects": 48,
+    "n_images": 144,
+    "brand_modal": {
+      "k": 20,
+      "n": 48,
+      "rate": 0.4166666666666667,
+      "ci95": [
+        0.2885,
+        0.5572
+      ]
+    },
+    "category_modal": {
+      "k": 36,
+      "n": 48,
+      "rate": 0.75,
+      "ci95": [
+        0.6122,
+        0.8508
+      ]
+    },
+    "strategies": {
+      "first": {
+        "k": 11,
+        "n": 48,
+        "rate": 0.22916666666666666,
+        "ci95": [
+          0.1331,
+          0.3654
+        ]
+      },
+      "modal_tuple": {
+        "k": 9,
+        "n": 48,
+        "rate": 0.1875,
+        "ci95": [
+          0.1019,
+          0.3194
+        ]
+      },
+      "brand_then_model": {
+        "k": 9,
+        "n": 48,
+        "rate": 0.1875,
+        "ci95": [
+          0.1019,
+          0.3194
+        ]
+      },
+      "basis_preferred": {
+        "k": 12,
+        "n": 48,
+        "rate": 0.25,
+        "ci95": [
+          0.1492,
+          0.3878
+        ]
+      },
+      "oracle_any": {
+        "k": 17,
+        "n": 48,
+        "rate": 0.3541666666666667,
+        "ci95": [
+          0.2343,
+          0.4956
+        ]
+      },
+      "all_images": {
+        "k": 8,
+        "n": 48,
+        "rate": 0.16666666666666666,
+        "ci95": [
+          0.087,
+          0.2958
+        ]
+      }
+    }
+  },
+  "rule_selection": {
+    "split": {
+      "train": [
+        "amazon__echo_dot__3",
+        "amazon__echo_show",
+        "amazon__echo_studio",
+        "avm__fritz_box",
+        "d_link__dir_600",
+        "d_link__dir_645",
+        "d_link__dir_895l",
+        "d_link__dsl_524t",
+        "d_link__dwl_900ap",
+        "google__nest_mini",
+        "hikvision__ds_2td95c8_300zk2fl",
+        "huawei__speedport_w723v",
+        "mikrotik__lte_5g",
+        "samsung__sgh_f480v",
+        "tp_link__archer_c54",
+        "tp_link__archer_c7",
+        "tp_link__archer_c9",
+        "tp_link__tl_mr3020",
+        "tuya__smart_plug",
+        "zyxel__p_2602hw_d7a_8319",
+        "zyxel__p_2602hw_d7a_8322",
+        "zyxel__p_2602hw_d7a_8325",
+        "zyxel__p_872h"
+      ],
+      "eval": [
+        "amazon__echo_dot",
+        "amazon__echo_plus",
+        "apple__homepod",
+        "apple__homepod_mini",
+        "d_link__covr_c1203",
+        "d_link__di_808hv",
+        "google__nest_doorbell",
+        "netgear__knr_200",
+        "philips__hue_bridge",
+        "philips__hue_white",
+        "tp_link__archer_a6__4",
+        "tp_link__hs110",
+        "verisure__smartplug",
+        "wemo__mini_smart_plug",
+        "wemo__smart_plug",
+        "zyxel__es_105",
+        "zyxel__nbg_417n",
+        "zyxel__p_2602hw_d7a_7777",
+        "zyxel__p_2602hw_d7a_8320",
+        "zyxel__p_2602hw_d7a_8321",
+        "zyxel__p_2602hw_d7a_8323",
+        "zyxel__p_2602hw_d7a_8327",
+        "zyxel__p_2602hw_d7a_8432",
+        "zyxel__p_870ha",
+        "zyxel__u_1496e"
+      ],
+      "sha256_train": "3ad2d75be8e8e46b",
+      "sha256_eval": "779e02e876701ed7"
+    },
+    "candidates": {
+      "first": {
+        "train": {
+          "k": 6,
+          "n": 23,
+          "rate": 0.2608695652173913,
+          "ci95": [
+            0.1255,
+            0.4647
+          ]
+        },
+        "eval": {
+          "k": 5,
+          "n": 25,
+          "rate": 0.2,
+          "ci95": [
+            0.0886,
+            0.3913
+          ]
+        }
+      },
+      "modal_tuple": {
+        "train": {
+          "k": 5,
+          "n": 23,
+          "rate": 0.21739130434782608,
+          "ci95": [
+            0.0966,
+            0.419
+          ]
+        },
+        "eval": {
+          "k": 4,
+          "n": 25,
+          "rate": 0.16,
+          "ci95": [
+            0.064,
+            0.3465
+          ]
+        }
+      },
+      "brand_then_model": {
+        "train": {
+          "k": 6,
+          "n": 23,
+          "rate": 0.2608695652173913,
+          "ci95": [
+            0.1255,
+            0.4647
+          ]
+        },
+        "eval": {
+          "k": 3,
+          "n": 25,
+          "rate": 0.12,
+          "ci95": [
+            0.0417,
+            0.2996
+          ]
+        }
+      },
+      "basis_preferred": {
+        "train": {
+          "k": 7,
+          "n": 23,
+          "rate": 0.30434782608695654,
+          "ci95": [
+            0.156,
+            0.5087
+          ]
+        },
+        "eval": {
+          "k": 5,
+          "n": 25,
+          "rate": 0.2,
+          "ci95": [
+            0.0886,
+            0.3913
+          ]
+        }
+      }
+    },
+    "chosen_on_train": "basis_preferred",
+    "published_on_eval": {
+      "k": 5,
+      "n": 25,
+      "rate": 0.2,
+      "ci95": [
+        0.0886,
+        0.3913
+      ]
+    }
+  },
+  "latency_s": {
+    "n": 144,
+    "p50": 2.385,
+    "p95": 3.759,
+    "p99": 6.478,
+    "max": 8.152,
+    "mean": 2.549
+  },
+  "replay_v3b_vs_v4": {
+    "n": 144,
+    "tuple_identique": {
+      "k": 144,
+      "n": 144,
+      "rate": 1.0,
+      "ci95": [
+        0.974,
+        1.0
+      ]
+    },
+    "categorie_meme_verdict": {
+      "k": 144,
+      "n": 144,
+      "rate": 1.0,
+      "ci95": [
+        0.974,
+        1.0
+      ]
+    }
+  }
+}

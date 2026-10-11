@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--
+  Interface locale iot-audit.
+
+  Règle de conception (docs/05 §4) : « l'UI affiche (A, R) et la
+  distribution. Le score unique n'existe que pour trier une liste. »
+  Aucun écran de cette page ne résume un objet par un pourcentage unique :
+  l'onglet Résultats montre A, R, le quadrant et la distribution complète.
+
+  Règle de conception (docs/02) : « L'UI affiche le quadrant, pas un
+  pourcentage unique. »
+
+  La page ne charge rien depuis le réseau : une seule origine, trois fichiers
+  locaux (voir la CSP servie par server.py).
+-->
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>iot-audit — interface locale</title>
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<header>
+  <h1>iot-audit</h1>
+  <div id="banner" class="banner">chargement…</div>
+</header>
+
+<nav>
+  <button class="tab" data-tab="infra">Infra</button>
+  <button class="tab" data-tab="corpus">Corpus</button>
+  <button class="tab" data-tab="run">Run live</button>
+  <button class="tab active" data-tab="results">Résultats</button>
+  <button class="tab" data-tab="journal">Journal</button>
+  <button class="tab" data-tab="gates">Contrôles</button>
+</nav>
+
+<main>
+  <!-- ------------------------------------------------------------- Infra -->
+  <section id="tab-infra" class="panel">
+    <h2>Tunnel vLLM</h2>
+    <p class="hint">
+      Un tunnel mort est <em>silencieux</em> : un run qui ne joint pas le modèle
+      ressemble trait pour trait à un run qui n'a rien produit. L'état ci-dessous
+      est une requête HTTP réelle, pas la présence d'un processus.
+    </p>
+    <div class="row">
+      <button data-action="tunnel/status">status</button>
+      <button data-action="tunnel/start" class="primary">start</button>
+      <button data-action="tunnel/stop" class="danger">stop</button>
+      <button data-action="tunnel/restart">restart</button>
+    </div>
+    <div id="tunnel-box" class="cards"></div>
+    <h3>Bases locales</h3>
+    <div id="dbs" class="cards"></div>
+  </section>
+
+  <!-- ------------------------------------------------------------ Corpus -->
+  <section id="tab-corpus" class="panel hidden">
+    <h2>Corpus gelé</h2>
+    <p class="hint">
+      Les 144 photos du manifeste v6 sont figées. Le nombre de photos
+      <strong>en cache local</strong> est ce qui peut réellement être traité :
+      une photo manquante n'est pas une erreur, c'est une absence de donnée.
+    </p>
+    <div id="corpus-head" class="cards"></div>
+    <table id="corpus-table">
+      <thead>
+        <tr><th>objet</th><th>vérité terrain</th><th>photos</th><th>en cache</th>
+            <th>strate</th><th>texte lisible</th><th></th></tr>
+      </thead>
+      <tbody></tbody>
+    </table>
+    <div class="row">
+      <button id="select-all-cached">tout sélectionner (en cache)</button>
+      <button id="select-none">tout désélectionner</button>
+    </div>
+  </section>
+
+  <!-- --------------------------------------------------------------- Run -->
+  <section id="tab-run" class="panel hidden">
+    <h2>Run live</h2>
+    <p class="hint">
+      Le run est le <strong>vrai</strong> banc : photos réelles, vLLM réel,
+      dictionnaire CPE et base NVD locaux, journal chaîné HMAC et scellement
+      Ed25519. Il ne réimplémente rien — il appelle l'orchestrateur.
+    </p>
+    <div class="row">
+      <label>photos par objet
+        <input id="max-images" type="number" min="1" max="6" value="3">
+      </label>
+      <label>endpoint
+        <input id="endpoint" type="text" size="46" spellcheck="false">
+      </label>
+    </div>
+    <div class="row">
+      <button id="start-run" class="primary">lancer le run</button>
+      <button id="stop-poll" class="hidden">arrêter le suivi</button>
+      <span id="run-selection" class="hint"></span>
+    </div>
+    <h3>Sortie</h3>
+    <pre id="run-output" class="console">(aucun run lancé)</pre>
+  </section>
+
+  <!-- --------------------------------------------------------- Résultats -->
+  <section id="tab-results" class="panel">
+    <h2>Résultats — A, R, distribution, quadrant</h2>
+    <p class="hint">
+      Aucun score unique n'est affiché. A (accord inter-photos) et R
+      (résolvabilité au référentiel) sont deux axes distincts : la cellule
+      « A élevé / R faible » est la signature d'un consensus halluciné, et elle
+      disparaîtrait derrière une moyenne (docs/05 §4.2, docs/02).
+    </p>
+    <div id="results-empty" class="hint">Aucun run pour l'instant.</div>
+    <div id="results-body" class="hidden">
+      <div class="row">
+        <button data-action="verify" class="secondary">re-vérifier le scellé (CLI tiers)</button>
+        <span id="report-line" class="hint"></span>
+      </div>
+      <div id="verify-out" class="cards"></div>
+
+      <h3>Quadrant (A × R)</h3>
+      <div id="quadrant" class="quadrant"></div>
+
+      <h3>Objets</h3>
+      <div id="objects"></div>
+    </div>
+  </section>
+
+  <!-- ----------------------------------------------------------- Journal -->
+  <section id="tab-journal" class="panel hidden">
+    <h2>Journal chaîné HMAC</h2>
+    <p class="hint">
+      Chaîne append-only : H<sub>k</sub> = HMAC(clé, H<sub>k−1</sub> || contenu).
+      Le tableau montre l'ordre réel des écritures — le scellement refuse
+      désormais d'exporter une chaîne rompue (« export bloqué », docs/03 §5).
+    </p>
+    <div id="chain-box" class="cards"></div>
+    <table id="journal-table">
+      <thead><tr><th>seq</th><th>étape</th><th>code</th><th>horodatage</th><th>charge</th></tr></thead>
+      <tbody></tbody>
+    </table>
+  </section>
+
+  <!-- ------------------------------------------------------------ Portes -->
+  <section id="tab-gates" class="panel hidden">
+    <h2>Contrôles</h2>
+    <p class="hint">
+      Ces boutons lancent exactement les commandes de la CI et des auto-tests du
+      dépôt. La sortie est conservée en entier : c'est l'échec qui compte.
+    </p>
+    <div class="row" id="gate-buttons"></div>
+    <h3>Sortie</h3>
+    <pre id="gate-output" class="console">(aucun contrôle lancé)</pre>
+  </section>
+</main>
+
+<footer>
+  <span id="footer-state" class="hint"></span>
+</footer>
+
+<script src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+# =============================================================================
+# iot-audit-tunnel.service — tunnel vLLM auto-repare, unite SYSTEMD UTILISATEUR.
+#
+# JAMAIS root, jamais /etc : le tunnel est un transfert SSH fait avec VOS cles,
+# sous VOTRE utilisateur. Il va donc dans ~/.config/systemd/user/.
+# Installation : infra/scripts/install_tunnel_autostart.sh install
+#
+# POURQUOI CE FICHIER EXISTE (2026-10-06)
+#   Infra/scripts/tunnel_vllm.sh sait demarrer, surveiller et relancer le
+#   tunnel, mais rien ne le relancait apres un redemarrage de la station de
+#   travail : au premier reboot le tunnel restait mort, et un tunnel mort est
+#   SILENCIEUX — un benchmark qui ne joint pas le modele ressemble trait pour
+#   trait a un benchmark qui a tourne et n'a rien produit.
+#
+# POURQUOI « start --foreground » ET PAS « start »
+#   Sans --foreground, le script rend la main apres avoir lance en arriere-plan
+#   une boucle de relance (`setsid`) : c'est un demon hors de tout cgroup, que
+#   systemd ne voit pas, ne surveille pas et ne peut pas arreter. --foreground
+#   execute UNE connexion en avant-plan et laisse systemd jouer le role de la
+#   boucle (Restart=always). Un seul proprietaire du tunnel, entierement
+#   controlable par `systemctl --user stop`.
+#
+# POURQUOI « ExecStartPre=stop »
+#   `start` sort immediatement en 0 si le tunnel repond DEJA. Avec
+#   Restart=always, ce cas serait une boucle de redemarrage a vide (demarrer,
+#   « deja la », sortir, redemarrer...). L'unite fait donc d'abord taire tout
+#   tunnel existant — y compris un tunnel lance a la main — puis installe le
+#   sien. L'unite est le seul proprietaire, ce qui rend l'etat lisible :
+#   `systemctl --user status` dit la verite au lieu de cohabiter en silence
+#   avec un forwarder orphelin.
+#
+# POURQUOI LE REDEMARRAGE EST LE COEUR DE L'UNITE
+#   La passerelle portier.polytech-lille.fr abandonne le transfert plusieurs
+#   fois par heure (mesure sur les sessions des 2026-10-05/06). ssh_forward_opts
+#   de tunnel_vllm.sh pose ServerAliveInterval=10 / ServerAliveCountMax=2 : une
+#   passerelle morte est detectee en ~20 s, la connexion sort en erreur, et
+#   c'est RestartSec qui ramene le tunnel. Sans cette unite, personne ne le
+#   ramenait.
+#
+# POURQUOI UN GABARIT ET PAS « %h/iot-audit/... »
+#   %h suppose que le depot est a $HOME/iot-audit. C'est une hypothese sur la
+#   MACHINE, pas un fait sur le depot : une copie de travail ailleurs, un autre
+#   utilisateur, un clone de verification, et l'unite pointe dans le vide —
+#   `systemd-analyze verify` le dit (« Command ... is not executable »), un
+#   demarrage reel non. Install_tunnel_autostart.sh remplace donc
+#   @TUNNEL_VLLM@ par le chemin ABSOLU du script tel qu'il l'a trouve, et
+#   verifie l'unite obtenue avant de l'activer.
+# =============================================================================
+
+[Unit]
+Description=Tunnel vLLM iot-audit (127.0.0.1:18000 -> zabeth21:8000), auto-repare
+# La passerelle et le cluster sont sur le reseau : demarrer avant qu'il soit la
+# produit une unite en echec qui ne se releve pas toute seule.
+After=network-online.target
+Wants=network-online.target
+# 0 = jamais renoncer. Une unite qui abandonne apres 5 essais laisse un tunnel
+# mort pendant des heures : exactement le defaut que ce fichier corrige.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+# Le « - » autorise l'echec de ce nettoyage (rien a arreter est un cas normal).
+ExecStartPre=-@TUNNEL_VLLM@ stop
+ExecStart=@TUNNEL_VLLM@ start --foreground
+Restart=always
+RestartSec=5
+# Laisse a ssh le temps de rendre la main sur SIGTERM avant le SIGKILL du
+# groupe de controle : un arret propre libere le port local tout de suite.
+TimeoutStopSec=15
+# Le tunnel ne lit ni n'ecrit rien hors de son repertoire d'etat
+# (${XDG_RUNTIME_DIR}/iot-audit-tunnel) : aucune permission n'est elargie.
+NoNewPrivileges=yes
+
+[Install]
+WantedBy=default.target

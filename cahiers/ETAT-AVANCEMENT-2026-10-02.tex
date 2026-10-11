@@ -1,0 +1,718 @@
+\documentclass[10pt,a4paper]{article}
+% =====================================================================
+%  État d'avancement — version compacte (≤ 7 pages), lisible et expliquée
+%  Rédigé le 2026-10-02. Chaque chiffre porte sa date et son artefact.
+%  Compilation : xelatex
+% =====================================================================
+\usepackage{fontspec}
+\setmainfont{TeX Gyre Pagella}
+\setsansfont{Lato}
+\setmonofont{DejaVu Sans Mono}[Scale=0.84]
+\usepackage[french]{babel}
+\frenchsetup{AutoSpacePunctuation=true}
+\usepackage[margin=1.55cm,top=1.7cm,bottom=1.5cm,headheight=14pt]{geometry}
+\usepackage{amsmath,amssymb}
+\usepackage{booktabs,colortbl,xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,shapes.geometric,calc,fit,backgrounds,decorations.pathreplacing}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage{fontawesome5}
+\usepackage{titlesec}
+\usepackage{fancyhdr}
+\usepackage[shortlabels]{enumitem}
+\usepackage{multicol}
+\usepackage{caption}
+\usepackage{hyperref}
+\hypersetup{colorlinks=true,linkcolor=primary,urlcolor=primary!80!black,pdftitle={État d'avancement au 2 octobre 2026},pdfauthor={Mohamed Salhi}}
+
+\providecommand{\NoAutoSpacing}{}
+\newcommand{\code}[1]{{\NoAutoSpacing\ttfamily\detokenize{#1}}}
+\newcommand{\pct}[1]{#1\,\%}
+
+\definecolor{primary}{HTML}{1B3A5C}
+\definecolor{accent}{HTML}{0E7490}
+\definecolor{ok}{HTML}{15803D}
+\definecolor{warn}{HTML}{B45309}
+\definecolor{fail}{HTML}{B91C1C}
+\definecolor{todo}{HTML}{64748B}
+\definecolor{ink}{HTML}{111827}
+\definecolor{paper}{HTML}{F7F5F1}
+
+\newcommand{\OK}{\textcolor{ok}{\faCheckCircle}}
+\newcommand{\KO}{\textcolor{fail}{\faTimesCircle}}
+\newcommand{\PART}{\textcolor{warn}{\faClock}}
+\newcommand{\TODO}{\textcolor{todo}{\faHourglassHalf}}
+
+\captionsetup{font={footnotesize,sf},labelfont={bf,color=primary},skip=3pt}
+\captionsetup[table]{skip=3pt}
+
+\tikzset{
+  boite/.style={draw=primary!55, fill=primary!4, rounded corners=2pt,
+    align=center, inner sep=4pt, font=\scriptsize\sffamily},
+  boiteok/.style={boite, draw=ok!70, fill=ok!7},
+  boiteaccent/.style={boite, draw=accent!80, fill=accent!7},
+  boitetodo/.style={boite, draw=todo!70, fill=todo!7, dashed},
+  fleche/.style={-{Stealth[length=2.2mm]}, draw=primary!70, thick},
+}
+
+\newtcolorbox{clair}[1][]{colback=accent!6, colframe=accent!70, boxrule=0.5pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt, fonttitle=\bfseries\sffamily\small,
+  title={\faLightbulb~En clair}, #1}
+\newtcolorbox{atrancher}[1][]{colback=warn!6, colframe=warn!75, boxrule=0.5pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt, fonttitle=\bfseries\sffamily\small,
+  title={\faExclamationTriangle~À trancher}, #1}
+\newtcolorbox{limite}[1][]{colback=fail!5, colframe=fail!65, boxrule=0.5pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt, fonttitle=\bfseries\sffamily\small,
+  title={\faBan~Ce que le système n'a pas le droit de dire}, #1}
+
+\titleformat{\section}[block]
+  {\normalfont\sffamily\large\bfseries\color{primary}}{\thesection.}{0.5em}{}
+  [{\vspace{-6pt}\color{primary!25}\rule{\linewidth}{0.8pt}}]
+\titleformat{\subsection}[block]
+  {\normalfont\sffamily\normalsize\bfseries\color{primary!88}}{\thesubsection}{0.45em}{}
+\titlespacing*{\section}{0pt}{8pt}{4pt}
+\titlespacing*{\subsection}{0pt}{6pt}{2pt}
+\setlist[itemize]{leftmargin=1.2em,itemsep=1pt,topsep=2pt}
+\renewcommand{\arraystretch}{1.08}
+\setlength{\tabcolsep}{3pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{\scriptsize\sffamily\color{primary}État d'avancement — 2 octobre 2026}
+\fancyhead[R]{\scriptsize\sffamily\color{primary}Audit IoT · reconnaissance d'objets connectés}
+\fancyfoot[C]{\scriptsize\sffamily\color{todo}\thepage}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{primary!30}\leaders\hrule height \headrulewidth\hfill}}
+
+\begin{document}
+\sloppy
+\emergencystretch=2em
+
+% =====================================================================
+%  BANDEAU DE TITRE (compact)
+% =====================================================================
+\begin{tikzpicture}[remember picture,overlay]
+  \fill[primary] (current page.north west) rectangle ([yshift=-2.35cm]current page.north east);
+  \fill[accent] ([yshift=-2.35cm]current page.north west) rectangle ([yshift=-2.49cm]current page.north east);
+\end{tikzpicture}
+\vspace*{0.15cm}
+{\color{white}\sffamily
+\noindent{\LARGE\bfseries État d'avancement — 2 octobre 2026}\\[1mm]
+\noindent{\small Reconnaissance d'objets connectés pour l'audit de sécurité IoT · ce qui est atteint, mesuré et prouvé}\\[0.5mm]
+\noindent{\footnotesize\color{white!85}Mohamed Salhi — Polytech Lille / ENSA Kénitra · Tuteur : Thomas Vantroys · Horizon 15/09 → 15/12/2026}}
+\vspace{1.35cm}
+
+{\footnotesize\sffamily
+\noindent\textbf{Comment lire.} Ce document ne raconte pas ce qui est prévu : il raconte ce qui a
+été \textbf{mesuré}, avec la date et l'endroit où la preuve est rangée. Statuts : \OK{} fait et
+prouvé · \PART{} commencé mais incomplet · \TODO{} pas commencé. Les mesures vont jusqu'au
+\textbf{29/09/2026} ; le document est écrit le \textbf{02/10/2026}. Les sigles et les règles de
+comptage sont expliqués au §2, et \textbf{chaque chiffre est accompagné de ce qu'il veut dire}.}
+
+\section{Ce qui est atteint, en quatre phrases}
+\begin{center}
+\renewcommand{\arraystretch}{1.0}
+\begin{tabular}{@{}p{0.48\linewidth}p{0.48\linewidth}@{}}
+\begin{tcolorbox}[enhanced,colback=ok!5,colframe=ok!60,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt]
+{\sffamily\bfseries\color{ok}1. Les machines} {\footnotesize\sffamily Trois ordinateurs de
+l'école font tourner le modèle d'IA. Tout se lance, se mesure et s'arrête par des scripts. Un test
+de charge relancé 13 jours plus tard donne \textbf{les mêmes chiffres à 1\,\% près}. Après une
+coupure de courant, le service revient \textbf{tout seul en 75 secondes} et répond. Et internet
+coupé, l'IA continue : c'est vérifié pour de vrai, sur la machine.}
+\end{tcolorbox}&
+\begin{tcolorbox}[enhanced,colback=warn!5,colframe=warn!60,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt]
+{\sffamily\bfseries\color{warn}2. La reconnaissance} {\footnotesize\sffamily Sur 48 objets
+photographiés, l'outil en identifie complètement \textbf{10} (la cible était 34 sur 48). La cause
+est trouvée : quand la marque est \textbf{lisible} sur la photo, il la lit bien (9 objets sur 17
+parfaitement identifiés, jamais une marque fausse) ; quand elle ne l'est pas, c'est presque
+toujours raté (1 sur 31, et 12 marques fausses). En résumé : il \textbf{lit les étiquettes}, il ne
+\textbf{reconnaît pas les formes}.}
+\end{tcolorbox}\\[1.5mm]
+\begin{tcolorbox}[enhanced,colback=ok!5,colframe=ok!60,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt]
+{\sffamily\bfseries\color{ok}3. Les failles} {\footnotesize\sffamily La base officielle des
+failles (NVD, l'agence américaine qui les recense) est \textbf{copiée en local} : 121\,719 failles
+connues. Une recherche répond en \textbf{0,27 milliseconde} là où le contrat en autorise 50 :
+\textbf{près de 200 fois plus rapide} que le minimum exigé. Mais un choix de filtre fait que, pour
+les marques présentes dans nos photos, \textbf{10 failles seulement sur 11\,714} sont conservées :
+il faut décider de l'élargir.}
+\end{tcolorbox}&
+\begin{tcolorbox}[enhanced,colback=todo!5,colframe=todo!60,boxrule=0.5pt,arc=2pt,
+  left=5pt,right=5pt,top=4pt,bottom=4pt]
+{\sffamily\bfseries\color{todo}4. Ce qui reste à faire} {\footnotesize\sffamily Le rapport PDF
+signé (avec un journal qu'on ne peut pas modifier), la page web de démonstration, le calcul de
+confiance croisée (accord entre photos + fiche officielle existante) et l'index de recherche rapide
+des produits. Les jalons G3 à G7 — expliqués au §2 — sont prévus de \textbf{novembre à décembre}.}
+\end{tcolorbox}
+\end{tabular}
+\end{center}
+
+\begin{clair}
+\textbf{Les trois phrases à retenir.} (1)~L'infrastructure n'est plus un risque : elle est finie,
+mesurée et rejouable. (2)~Le cœur du sujet est mesuré honnêtement bas, et son obstacle est
+identifié : il faut des photos où la marque est \textbf{lisible}. (3)~La recherche de failles
+fonctionne, mais un filtre trop strict ferait afficher « aucune faille » pour des objets qui en
+ont : \textbf{c'est la décision la plus urgente.}
+\end{clair}
+
+% =====================================================================
+\section{Repères de lecture (à garder sous les yeux)}
+% =====================================================================
+{\footnotesize\sffamily\emergencystretch=3em
+\begin{multicols}{2}
+\begin{itemize}
+\item \textbf{Objet / image.} Un \emph{objet} (48 au total) a plusieurs photos : 144 au total.
+Un score « par objet » consolide toutes ses photos ; un score « par image » compte chaque photo.
+\item \textbf{Marque / modèle.} La \emph{marque} est le fabricant (« TP-Link ») ; le \emph{modèle}
+est la référence exacte (« TL-WR841N »). « Identifier » = donner les deux.
+\item \textbf{Catégorie.} Le \emph{type} d'objet : routeur, caméra, prise, ampoule, enceinte.
+C'est la question la plus facile ; trouver le modèle exact est la plus dure.
+\item \textbf{IC95 (« les crochets »).} La fourchette d'incertitude à 95\,\% : « 10/48 =
+20,8\,\% [11,7 ; 34,3] » se lit « on a mesuré 20,8\,\%, la vraie valeur est probablement entre
+11,7\,\% et 34,3\,\% ». Deux fourchettes qui ne se recouvrent pas = écart réel, pas du hasard.
+Tous les crochets de ce document se lisent ainsi.
+\item \textbf{Barème (A / P) — et les deux barèmes du projet.} Un \emph{barème} est la règle de
+comparaison appliquée avant de compter : \emph{A} = stricte (« DIR-600 » $\neq$ « dir 600 ») ;
+\emph{P} = tirets et espaces ignorés. Le modèle écrit souvent la \emph{bonne} référence avec un
+tiret différent : les deux résultats se publient. Le projet a deux barèmes : \code{metrics} (le
+barème interne, qui compte par objet) et \code{audit-grading} (un barème externe figé, recopié
+dans le dépôt, qui compte par photo).
+\item \textbf{Règles de comptage.} Une \emph{abstention} = le modèle répond « je ne sais pas ».
+La \emph{règle publiée} la compte comme une erreur ; la \emph{règle des réponses données} ne note
+que les objets où le modèle a osé répondre. \emph{Plafond} : borne haute optimiste, où une seule
+bonne photo par objet suffit.
+\item \textbf{« Juste » / « faux ».} \emph{Juste} = la réponse est identique à l'étiquetage humain
+de référence ; \emph{fausse} = différente.
+\item \textbf{M1.} La mesure principale : \emph{marque et modèle exacts} pour un objet, après
+consolidation de ses photos. Cible : 70\,\%. « \emph{v4 figée} » désigne l'exécution de référence
+dont les réponses servent partout dans ce document.
+\item \textbf{Sigles.} \emph{VLM} : le modèle de vision qui regarde la photo. \emph{CPE} : le code
+officiel d'un modèle de produit. \emph{CVE} : le nom public d'une faille. \emph{NVD} : la base
+officielle qui relie failles et produits. \emph{OCR} : la lecture automatique du texte imprimé.
+\item \textbf{Strates.} Les familles de photos : \emph{officiel} 3 (visuels constructeur — le
+modèle a pu les voir pendant son apprentissage), \emph{avis} 129, \emph{forums/démontages} 12
+(angles inhabituels, test le plus honnête).
+
+\item \textbf{Portes G0–G7.} Les huit étapes de validation du calendrier : une « porte » ne se
+ferme qu'en \emph{montrant la preuve}, pas en promettant. \textbf{G0} socle + corpus (fermée le
+24/09) · \textbf{G1} base de failles rejouée + 60 cas vérifiés (dû 19/10) · \textbf{G2} recherche
+produits + 200 cas (02/11) · \textbf{G3} chaîne complète photo → PDF (23/11) · \textbf{G4} journal
+scellé + signature + tests de falsification (30/11) · \textbf{G5} interface web (07/12) ·
+\textbf{G6} tous les chiffres régénérés (14/12) · \textbf{G7} gel final (15/12).
+\item \textbf{« Niveau × barème ».} Règle d'écriture du projet : un chiffre doit toujours dire
+\emph{comment} il a été compté (objet ou image ; barème A ou P ; règle de comptage), sinon il n'est
+pas citable. C'est ce que ce document applique partout.
+\end{itemize}
+\end{multicols}}
+
+\subsection{Les chiffres-phares, et ce qu'ils veulent dire}
+\begin{center}
+\footnotesize\sffamily
+\begin{tabular}{@{}p{0.235\linewidth}p{0.30\linewidth}p{0.40\linewidth}@{}}
+\toprule
+\textbf{Ce qui a été mesuré} & \textbf{Résultat} & \textbf{Ce que ça veut dire}\\
+\midrule
+Identification complète & 10 objets sur 48 & Loin de la cible de 34/48 — mais la cause est connue (voir §3).\\
+Marque lisible dans la photo & 9 objets sur 17 identifiés ; 0 marque inventée & Là où il y a du texte, il lit bien.\\
+Marque illisible & 1 objet sur 31 & Sans texte, il ne devine pas la marque — c'est mesuré, pas supposé.\\
+Relancer le même test & 144 photos sur 144 donnent la même réponse & Le système est stable : les chiffres sont fiables.\\
+Temps par photo & médiane 2,4 s ; 95\,\% des photos sous 3,8 s & La cible contractuelle est 10 s : tenue avec marge.\\
+Base de failles locale & 121\,719 failles · 324\,470 règles de correspondance & L'équivalent de plusieurs années du NVD, utilisable hors-ligne.\\
+Recherche d'une faille & 0,27 ms (cible : 50 ms) & Le résultat sort instantanément, sans réseau.\\
+Charge des 3 machines & 30,2 requêtes/s par machine au point retenu (16 requêtes simultanées) & Même valeur retrouvée à 13 jours d'écart ; au-delà, la latence monte plus vite que le débit.\\
+Tests automatiques & 60 sur 60 passent & Les fondations ne cassent pas quand on modifie le code.\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+% =====================================================================
+\section{Le projet, et la limite qu'il ne peut pas franchir}
+% =====================================================================
+À partir d'une photo d'un seul objet connecté, l'outil doit deviner marque et modèle, retrouver la
+fiche officielle du produit, puis lister les failles connues — sans jamais se connecter à internet
+pendant un audit. Une photo montre le boîtier, jamais le logiciel interne : le système pourra donc
+dire « ce modèle a connu des failles », jamais « cet exemplaire est vulnérable ». C'est une règle
+inscrite dans le logiciel, pas une précaution de rédaction.
+
+\begin{center}
+\begin{tikzpicture}[node distance=2.6mm and 2.6mm, font=\scriptsize\sffamily]
+\node[boiteok] (a) {\faCamera\ \textbf{1. Regarder}\\ photo → marque, modèle};
+\node[boiteok,right=of a] (b) {\faFileSignature\ \textbf{2. Consolider}\\ accord entre photos + fiche};
+\node[boiteaccent,right=of b] (c) {\faSearch\ \textbf{3. Résoudre}\\ fiche produit CPE + score};
+\node[boiteok,right=of c] (d) {\faDatabase\ \textbf{4. Chercher}\\ failles connues, « niveau produit »};
+\node[boitetodo,right=of d] (e) {\faFilePdf\ \textbf{5. Rapporter}\\ journal scellé + PDF \TODO};
+\draw[fleche] (a)--(b); \draw[fleche] (b)--(c); \draw[fleche] (c)--(d);
+\draw[fleche,dashed] (d)--(e);
+\end{tikzpicture}
+\captionof{figure}{La chaîne complète. La flèche pointillée est la seule étape non commencée à ce
+jour. Chaque étape échange un formulaire fixe, ce qui permet de la tester seule.}\label{fig:chaine}
+\end{center}
+
+\begin{limite}
+Une photo ne montre jamais la version du logiciel interne. Le vocabulaire du rapport est donc
+verrouillé : on parle du \emph{modèle}, pas de l'exemplaire. Sont interdits, et testés comme tels :
+« ces failles concernent votre exemplaire » · « aucune faille trouvée, donc l'objet est sûr » (rien
+de répertorié $\neq$ rien qui existe) · « le système détecte les failles » ou une note de risque
+agrégée · un pourcentage sans son effectif ni son intervalle.
+\end{limite}
+
+% =====================================================================
+\section{La reconnaissance : ce qui marche, ce qui ne marche pas, et pourquoi}
+% =====================================================================
+\subsection{Le modèle choisi, et pourquoi}
+Trois modèles d'IA ont regardé \textbf{les mêmes 144 photos}, avec la même consigne, sans hasard
+(température 0), et notés contre la vérité :
+\begin{center}
+\footnotesize\sffamily
+\begin{tabular}{@{}p{0.30\linewidth}p{0.26\linewidth}p{0.38\linewidth}@{}}
+\toprule
+\textbf{Modèle} & \textbf{Bonnes réponses /144} & \textbf{Avantage ou défaut décisif}\\
+\midrule
+\textbf{Qwen2.5-VL-7B} \emph{(retenu)} & \textbf{79} [0,467 ; 0,628] & Meilleur score ; \textbf{aucune} réponse hors format.\\
+Llama-3.2-11B-Vision & 72 [0,419 ; 0,581] & Écarté pour la fiabilité : \textbf{21 réponses sur 144 hors format}, et 54 fois il affirme avoir lu une étiquette alors que rien n'est lisible.\\
+Qwen3-VL-8B & 53 [0,294 ; 0,449] & Plus récent mais nettement moins bon ; l'écart entre les intervalles est réel.\\
+\bottomrule
+\end{tabular}
+
+{\scriptsize\sffamily Lecture des crochets : c'est la fourchette à 95\,\% (voir §2) — « 79 sur
+144 = 54,9\,\%, entre 46,7\,\% et 62,8\,\% ».}
+\end{center}
+Le choix n'est donc pas « le plus récent » : c'est le plus juste sur ce corpus \emph{et} celui qui
+respecte toujours le format demandé — indispensable pour un outil automatique.
+
+\subsection{Trois niveaux de difficulté, très différents}
+La même photo peut être bien \emph{classée} (c'est une caméra) et mal \emph{identifiée} (une marque
+fausse). Voici les trois niveaux, par photo :
+\begin{center}
+\footnotesize\sffamily
+\begin{tabular}{@{}p{0.24\linewidth}p{0.22\linewidth}p{0.46\linewidth}@{}}
+\toprule
+\textbf{Niveau} & \textbf{Résultat} & \textbf{Ce que ça veut dire}\\
+\midrule
+Type d'objet (catégorie) & 122 / 144 (84,7\,\%) & Distinguer routeur, caméra, prise, ampoule, enceinte : le plus facile.\\
+Modèle du produit & 79 / 144 (54,9\,\% en P) & Le nom exact (« TL-WR841N ») est plus dur que le type.\\
+Marque seule & 46 / 144 (31,9\,\%) & Même la marque est rarement juste — d'où le diagnostic ci-dessous.\\
+Marque \emph{et} modèle & 19 / 144 (13,2\,\%) & Le niveau le plus dur, celui que le produit doit atteindre.\\
+\bottomrule
+\end{tabular}
+
+{\footnotesize\sffamily Ces quatre lignes comptent \emph{photo par photo} (barème \code{audit-grading}) ; le score par objet (M1, §4.3) est plus dur : il exige la bonne réponse \emph{après} avoir mis d'accord les photos du même objet.}
+\end{center}
+
+\subsection{Le score principal : identifier un objet entier (marque \emph{et} modèle)}
+Un objet a plusieurs photos : la mesure principale du projet, \textbf{M1}, exige la bonne marque
+\emph{et} le bon modèle pour l'objet, après avoir mis ses photos d'accord entre elles. Trois façons
+de compter existent — et les trois se publient, parce qu'elles mesurent trois choses :
+
+\begin{center}
+\begin{minipage}[t]{0.47\linewidth}
+\footnotesize\sffamily
+\begin{tabular}{@{}p{0.30\linewidth}p{0.22\linewidth}p{0.40\linewidth}@{}}
+\toprule
+\textbf{Manière de compter} & \textbf{Résultat} & \textbf{Ce qu'elle mesure}\\
+\midrule
+Règle publiée (l'abstention compte) & \textbf{10/48 = 20,8\,\%} & Un « je ne sais pas » est compté comme une erreur.\\
+Réponses données seulement & 15/48 = 31,2\,\% & On ne note que les objets où le modèle a osé répondre.\\
+Plafond optimiste & 17/48 = 35,4\,\% & Même avec une seule bonne photo par objet, impossible d'aller au-delà.\\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{tikzpicture}
+\begin{axis}[width=\linewidth,height=3.8cm,
+  ybar,bar width=10pt,ymin=0,ymax=0.8,
+  symbolic x coords={{règle publiée},{réponses},{plafond}},
+  xtick=data, ylabel={M1 (par objet)}, nodes near coords,
+  enlarge x limits=0.28, grid=major, grid style={primary!12},
+  axis line style={primary!50}, tick style={primary!50},
+  every node near coord/.append style={font=\scriptsize\sffamily\bfseries}]
+\addplot[fill=primary!55,draw=primary!80] coordinates {
+  ({règle publiée},0.208) ({réponses},0.312) (plafond,0.354)};
+\draw[fail,thick,dashed] (axis cs:{règle publiée},0.70)--(axis cs:plafond,0.70)
+  node[pos=1,right,font=\scriptsize\sffamily,color=fail]{cible 0,70};
+\end{axis}
+\end{tikzpicture}
+\captionof{figure}{Les trois façons de compter le score M1 (par objet, exécution v4 figée, 144 photos / 48 objets).
+La barre « plafond » montre qu'\textbf{aucun mode de comptage} ne rapproche de la cible : le
+problème est dans ce que le modèle perçoit, pas dans la façon de compter.}
+\end{minipage}
+\end{center}
+
+\begin{clair}
+Pourquoi trois colonnes au lieu d'un seul chiffre ? Parce que le projet \textbf{ordonne} au modèle
+de répondre « je ne sais pas » quand la marque n'est pas visible. La règle publiée compte cette
+honnêteté comme une erreur ; la deuxième ne juge que les réponses données. Publier une seule des
+deux, ce serait choisir une politique sans le dire. Et le plafond (17/48) fixe la limite
+optimiste : même en offrant au système une photo parfaite par objet, on reste à 35\,\%.
+\end{clair}
+
+\subsection{Le résultat qui explique tout : la marque se \emph{lit}, elle ne se \emph{reconnaît} pas}
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[width=0.60\linewidth,height=4.1cm,
+  ybar,bar width=7pt,ymin=0,ymax=1.05,
+  symbolic x coords={{marque (photo)},{objet exact},{catégorie (photo)}},
+  xtick=data, ylabel={exactitude},
+  legend style={font=\scriptsize\sffamily,at={(0.5,1.02)},anchor=south,legend columns=2},
+  enlarge x limits=0.22, grid=major, grid style={primary!12},
+  axis line style={primary!50}, tick style={primary!50},
+  every node near coord/.append style={font=\scriptsize\sffamily}]
+\addplot[fill=ok!70,draw=ok!80] coordinates {({marque (photo)},0.766) ({objet exact},0.529) ({catégorie (photo)},1.000)};
+\addplot[fill=fail!60,draw=fail!80] coordinates {({marque (photo)},0.103) ({objet exact},0.032) ({catégorie (photo)},0.773)};
+\legend{texte lisible sur la photo, texte illisible}
+\end{axis}
+\end{tikzpicture}
+\captionof{figure}{Comment lire ce graphique : chaque paire de barres compare les photos où le
+texte est lisible (vert) à celles où il ne l'est pas (rouge). Quand il y a du texte,
+\textbf{77\,\% des photos ont la bonne marque} et 53\,\% des objets sont parfaitement identifiés ;
+sans texte, ces taux tombent à \textbf{10\,\%} et 3\,\% — la marque juste est
+\textbf{7,4 fois plus rare}.}\label{fig:canal}
+\end{center}
+
+Répartition complète des 48 objets (règle publiée) : \textbf{10 exacts} (marque et modèle) ·
+\textbf{9} marque juste mais modèle faux · \textbf{17} catégorie juste mais marque non trouvée ·
+\textbf{12} franchement faux. Les 12 cas « franchement faux » viennent \emph{tous} de photos sans
+texte lisible. Quand le texte est lisible, le système ne donne \emph{jamais} une marque fausse :
+soit il trouve la bonne, soit il se tait. Sans texte, 12 objets sur 31 reçoivent une marque
+fausse. Ce n'est pas une dégradation progressive, c'est \emph{un canal qui s'éteint}. Exemple
+parlant : sur l'enceinte \code{amazon\_\_echo\_dot}, la marque « amazon » est juste \textbf{12 fois
+sur 12} quand le texte est lisible, et la réponse est vide \textbf{25 fois sur 29} quand il ne
+l'est pas. Autrement dit : le système \textbf{lit} les étiquettes ; il ne \textbf{reconnaît} pas
+les formes. Le levier n'est donc pas le prompt, mais \textbf{le corpus de photos} : il faut
+photographier la marque (face, étiquette, sérigraphie).
+
+Deux observations utiles, mesurées. (1)~Sur les 12 photos de \emph{démontage} (angles
+inhabituels), \textbf{0 objet est identifié exactement} — normal : il n'y a rien à lire.
+(2)~Les 3 \emph{visuels officiels} du constructeur ne sont pas mieux lotis sur l'identification
+exacte (0 sur 3), mais leur catégorie est juste 3 fois sur 3 : c'est plutôt une bonne nouvelle,
+car rien ne montre que le modèle \emph{récite} des images qu'il aurait vues pendant son
+apprentissage.
+
+\subsection{Trois pistes essayées pour réparer la marque — et pourquoi aucune ne marche}
+\begin{itemize}
+\item \textbf{Chercher la marque dans le dictionnaire officiel des produits (CPE) : 0 réussite sur
+22 essais.} L'idée était : quand le modèle ne dit rien, chercher « Echo Dot » dans les 1,8 million
+de fiches produits officielles. Résultat : ce dictionnaire est rempli de logiciels, pas d'objets
+grand public — il propose \code{dnnsoftware} pour « Echo Dot » ou \code{minio} pour « HomePod
+mini ». Sur 22 essais, \textbf{17 propositions sont fausses}. C'est aussi une explication du
+mauvais score de la « résolution de fiche produit » (§8, AC10) : ce que ce dictionnaire ne décrit
+pas, le système ne peut pas le retrouver.
+\item \textbf{Changer la consigne pour demander la marque (essai « v5 ») : +1 objet seulement}
+(11 au lieu de 10 sur 48), avec des fourchettes d'incertitude qui se chevauchent — l'écart peut
+donc être du hasard ; et si l'on ne compte que les réponses données, c'est exactement pareil
+(15/48 des deux côtés).
+\item \textbf{Combiner deux consignes ne peut pas aider.} Vérifié : les deux versions laissent
+\emph{les mêmes photos} sans réponse. C'est la photo qui décide, pas la formulation de la question.
+\end{itemize}
+
+\subsection{Le diagnostic chiffré : le prompt ne peut pas sauver la mise}
+On a repris les photos ratées une par une — 65 photos sur 144 n'ont pas donné la bonne réponse —
+et demandé à \textbf{deux lecteurs de texte indépendants} si la référence du produit y était écrite
+quelque part. Verdict : \textbf{11 photos seulement} sont « récupérables » : la référence est
+visible dans l'image, mais le modèle ne l'a pas recopiée. Un meilleur prompt pourrait donc
+corriger ces 11 cas, soit \textbf{+7,6 points au maximum} sur 144 photos. Les \textbf{49 autres}
+n'ont \textbf{aucune trace écrite} : aucune formulation ne peut inventer ce qui n'est pas
+photographié — la cible de 70\,\% reste hors d'atteinte par le prompt. À l'inverse, la
+\textbf{classification} (le type d'objet) tient bien : prise 12/12 · enceinte 76/82 · ampoule 4/5 ·
+routeur 29/41 · caméra 1/4 (seulement 4 caméras : trop peu pour conclure). Le seul vrai point
+faible est la confusion \emph{routeur} ↔ \emph{enceinte} (4 cas), logique pour des boîtiers
+ressemblant à des enceintes connectées.
+
+% =====================================================================
+\section{Lire le texte des étiquettes (OCR) : un aide, pas une preuve}
+% =====================================================================
+Deux logiciels de lecture ont été comparés (PaddleOCR et OnnxTR). Deux plutôt qu'un, parce qu'on
+retient un texte dès que \textbf{l'un ou l'autre} le lit (décision du 15/09) : cela fait
+retrouver plus de textes réels, sans jamais changer la référence — qui reste l'étiquetage humain.
+Trois mesures ont été faites, de la plus facile à la plus réaliste :
+\begin{center}
+\footnotesize\sffamily
+\begin{tabular}{@{}p{0.24\linewidth}p{0.30\linewidth}p{0.40\linewidth}@{}}
+\toprule
+\textbf{Situation testée} & \textbf{Résultat} & \textbf{Ce que ça veut dire}\\
+\midrule
+On montre la zone du texte & 66\,\% de réussite (1\,384 textes) & Si on lui indique o\`u regarder, il recopie environ 2 textes sur 3.\\
+Photo entière, gros plan & 35\,\% (600 photos, 2\,604 mots) & Il lit environ 1 mot sur 3.\\
+Vraie chaîne : trouver puis lire & \textbf{10\,\%} (12 cas sur 120) & \textbf{Le chiffre honnête : 1 cas sur 10.} On ne peut pas compter sur l'OCR comme source de vérité.\\
+\bottomrule
+\end{tabular}
+\end{center}
+Dans le produit, l'OCR sert seulement à deux choses : remplir le champ « texte lu » et dire si une
+photo contient du texte. Un contrôle vérifie qu'on ne triche pas avec : quand le modèle affirme
+avoir lu une étiquette, on vérifie que le texte est bien présent — c'est vrai \textbf{94 fois sur
+100} (75/80).
+
+% =====================================================================
+\section{La base de failles locale : ce qui est prouvé, et le choix à trancher}
+% =====================================================================
+\subsection{Ce qui a été importé, et pourquoi c'est traçable}
+Les fichiers annuels officiels du NVD (l'agence américaine qui recense les failles) ont été
+téléchargés \textbf{une fois} pour 2021–2024, conservés sur disque et \textbf{signés par empreinte}
+(une empreinte est l'ADN numérique du fichier). Ainsi, un rapport pourra dire exactement quelle
+version de la base il a consultée. Dans ces fichiers, chaque faille est marquée \emph{matériel}
+(\code{h}), \emph{application} (\code{a}) ou \emph{système} (\code{o}) ; le projet n'a gardé que
+le \emph{matériel} : \textbf{121\,719 failles connues} (une « CVE » est le nom public d'une faille,
+ex. CVE-2024-1234), \textbf{324\,470 règles de correspondance} entre failles et produits, et
+\textbf{873 fabricants}. Détail qui compte pour l'audit : les 3\,559 failles \textbf{retirées}
+par le NVD sont conservées avec leur statut, pour qu'un rapport antérieur reste explicable.
+
+\subsection{Comment le moteur décide}
+Une fiche NVD n'est pas une simple ligne : c'est un \textbf{arbre logique} (conditions ET / OU /
+EXCLUSION) dont les feuilles portent des \textbf{plages de versions}. Le moteur, écrit pour être
+relu, fait donc : une première requête large en base pour éliminer l'essentiel ; puis une décision
+en Python, testable ; et il affiche toujours sa \textbf{force de preuve} : produit exact > plage de
+version > simple vendeur — jamais mélangées. Enfin, quand la version du logiciel interne est
+inconnue (le cas normal du projet), le résultat est marqué \code{unresolved} : ni « concerné », ni
+« non concerné » sans le dire. C'est la règle qui évite le pire défaut possible d'un tel outil : un
+faux négatif silencieux.
+
+\subsection{Les preuves de la porte G1 (29/09)}
+\textbf{On peut relancer l'import sans risque.} Vérifié par \textbf{trois passes} sur une base
+neuve, dont une avec des fichiers \emph{renommés} : c'est la seule qui réécrit vraiment les
+données (la deuxième passe saute les fichiers grâce à leur empreinte). Résultat : comptes
+identiques, \textbf{0 doublon}.
+
+\textbf{Le moteur donne les bonnes réponses.} 60 couples « fabricant + produit » ont été choisis
+dans toutes les catégories (beaucoup de failles, une seule, aucune…), et la réponse attendue a été
+recalculée \emph{indépendamment} à partir des fichiers bruts. Le moteur donne \textbf{exactement la
+même réponse 60 fois sur 60 : 0 manqué, 0 inventé}. Limites écrites noir sur blanc : la branche
+« exclusion » n'est jamais déclenchée par les données réelles, et 324\,470 lignes ne sont pas
+« 324\,470 failles exploitables ».
+
+\textbf{C'est rapide.} 0,27 milliseconde à 95\,\% des cas (figure ci-dessous), pour une cible de
+50 ms : \textbf{près de 200 fois plus rapide} que le minimum demandé.
+
+\begin{center}
+\begin{minipage}[t]{0.47\linewidth}
+\begin{tikzpicture}
+\begin{axis}[width=\linewidth,height=3.5cm,
+  ybar,bar width=10pt,ymode=log,log origin=infty,ymin=0.02,ymax=100,
+  symbolic x coords={p50,p95,max,cible}, xtick=data,
+  ylabel={ms (échelle log)}, nodes near coords, enlarge x limits=0.25,
+  grid=major, grid style={primary!12}, axis line style={primary!50}, tick style={primary!50},
+  every node near coord/.append style={font=\scriptsize\sffamily\bfseries}]
+\addplot[fill=ok!60,draw=ok!80] coordinates {(p50,0.062) (p95,0.267) (max,2.043)};
+\addplot[fill=fail!60,draw=fail!80] coordinates {(cible,50)};
+\end{axis}
+\end{tikzpicture}
+\captionof{figure}{Recherche de faille : médiane, 95\,\% des cas, pire cas, et la cible du contrat.
+Tout tient sous 2,1 ms.}\label{fig:lat}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\begin{tikzpicture}
+\begin{axis}[width=\linewidth,height=3.5cm,
+  ybar,bar width=12pt,ymode=log,log origin=infty,ymin=1,ymax=100000,
+  symbolic x coords={concernées,gardées}, xtick=data,
+  ylabel={failles (échelle log)}, nodes near coords, enlarge x limits=0.35,
+  grid=major, grid style={primary!12}, axis line style={primary!50}, tick style={primary!50},
+  every node near coord/.append style={font=\scriptsize\sffamily\bfseries}]
+\addplot[fill=fail!55,draw=fail!80] coordinates {(concernées,11714)};
+\addplot[fill=ok!55,draw=ok!80] coordinates {(gardées,10)};
+\end{axis}
+\end{tikzpicture}
+\captionof{figure}{Pour les marques de nos photos, 11\,714 failles les concernent mais \textbf{10
+seulement sont gardées} par le filtre « matériel » (0,09\,\%).}\label{fig:parth}
+\end{minipage}
+\end{center}
+
+\begin{atrancher}
+{\footnotesize Le filtre ne conserve que les règles classées « matériel ». Conséquence mesurée le
+29/09 : pour \textbf{google 2} failles gardées (1\,680 « application » et 3\,881 « système »
+écartées) · \textbf{apple 2} · \textbf{huawei 1} · \textbf{samsung 3} · \textbf{netgear 2} · et
+\textbf{0 pour d-link, tp-link, zyxel, amazon, philips, hikvision, mikrotik, belkin}. Autrement
+dit : auditer un routeur ou une caméra de nos photos afficherait « aucune faille connue » — une
+phrase que le projet s'interdit d'écrire, puisque ces failles existent. Trois sorties possibles :
+\textbf{(a)} élargir l'import aux parties \emph{application} et \emph{système} ; \textbf{(b)}
+déclarer le périmètre « matériel nu » et refuser explicitement au lieu de conclure ; \textbf{(c)}
+élargir en conservant la force de preuve affichée. \textbf{C'est la décision la plus urgente du
+projet} et elle relève du contrat, pas du code.}
+\end{atrancher}
+
+% =====================================================================
+\section{Les machines de l'école : ce qui a été construit et prouvé}
+% =====================================================================
+Trois ordinateurs identiques (carte RTX 3060 de 12 Go) font tourner le modèle d'IA. Ils ne sont
+joignables que depuis l'école : on entre par une machine de passage (le « bastion »), puis on
+atteint le réseau local \code{172.26.145.x}. Le service d'IA écoute sur le port 8000 de chaque
+machine, relié \emph{à l'adresse du réseau local} — joignable dans le laboratoire, invisible
+d'internet. Ce n'est pas un réglage par défaut : c'est une clause du contrat de sécurité
+du projet.
+
+\begin{center}
+\begin{minipage}[t]{0.38\linewidth}
+\begin{tikzpicture}[node distance=3.5mm and 5mm, font=\scriptsize\sffamily]
+\node[boite] (poste) {\faUser\ Poste};
+\node[boite,right=of poste] (gw) {\faDoorOpen\ bastion};
+\node[boiteok,right=of gw] (z22) {\faServer\ z22\code{.72}};
+\node[boiteok,above=2mm of z22] (z21) {\faServer\ z21\code{.71}};
+\node[boiteok,below=2mm of z22] (z23) {\faServer\ z23\code{.73}};
+\draw[fleche] (poste)--(gw); \draw[fleche] (gw)--(z22); \draw[fleche] (gw)--(z21); \draw[fleche] (gw)--(z23);
+\begin{scope}[on background layer]
+\node[draw=primary!35,dashed,rounded corners,fit=(z21)(z22)(z23),inner sep=3pt] (lan) {};
+\end{scope}
+\end{tikzpicture}
+\captionof{figure}{Trois nœuds derrière un bastion ; réseau local \code{172.26.145.0/24}.}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.60\linewidth}
+\begin{tikzpicture}
+\begin{axis}[width=\linewidth,height=4.0cm,
+  xlabel={charge demandée à chaque machine (requêtes simultanées)}, ylabel={débit (req/s)},
+  xmin=6,xmax=30,ymin=15,ymax=38, grid=major, grid style={primary!12},
+  axis line style={primary!50}, tick style={primary!50}]
+\addplot[ok,thick,mark=*] coordinates {(8,18.0)(12,24.7)(16,30.1)(18,25.9)(24,32.1)(28,35.3)};
+\addplot[primary!45,thick,dashed,mark=square*] coordinates {(8,17.4)(12,24.8)(16,30.3)(18,25.8)(24,32.0)(28,36.4)};
+\draw[fail,thick,dashed] (axis cs:16,15)--(axis cs:16,38) node[pos=0.6,right,font=\tiny\sffamily,color=fail]{compromis retenu (16)};
+\end{axis}
+\end{tikzpicture}
+\captionof{figure}{Test de charge : en vert le 28/09, en pointillé le 15/09. Les deux courbes se
+superposent : le résultat est reproductible. Le débit monte jusqu'à 16 requêtes simultanées par
+machine (30 req/s, latence médiane 1,57 s), passe par un creux à 18 (25,9 req/s, latence
++31\,\%), puis remonte jusqu'à 35,3 req/s à 28 requêtes — mais avec 2,27 s de latence médiane.
+Le compromis retenu est \textbf{16} : au-delà, la latence augmente beaucoup plus vite que le
+débit.}\label{fig:banc}
+\end{minipage}
+\end{center}
+
+\noindent\textbf{Comment on sait que les machines sont saines.} Chaque nœud passe une liste de
+contrôles automatiques (nom de code « NOEUD DORE » quand tout est vert) : 20 contrôles rapides
+(18 passent, 2 avertissements) et 22 contrôles profonds (21 passent, 1 avertissement), sur
+\textbf{les trois machines}. Les avertissements sont connus : « internet joignable » est l'état
+normal du laboratoire, et le seul autre a disparu après nettoyage (voir plus bas). Deux contrôles
+profonds font vraiment tourner le produit : une inférence réelle (1,49 s) et le JSON qu'elle
+renvoie — \textbf{le même, caractère pour caractère, sur les trois machines} : même modèle, mêmes
+poids, même réponse.
+
+\noindent\textbf{Ce que le test de charge a appris sur le serveur lui-même.} En lisant les
+compteurs internes du serveur, on voit \emph{où} passe le temps d'une requête : aux paliers 16 et
+18 (huit tirages), la file d'attente est restée \textbf{nulle}, et tout le ralentissement vient
+du \emph{décodage} (le moment où le modèle écrit sa réponse) — +35\,\% entre 16 et 18, retrouvé à
+1\,\% près sur quatre répétitions. La file ne s'allume qu'à partir de 32 requêtes par machine,
+c'est-à-dire au-delà du régime publié ici. Autre constat : la moyenne d'occupation du GPU ne
+distingue pas les paliers (près de 8 points d'écart entre deux passages au même niveau ; seul le
+maximum, 100\,\%, est stable) : \textbf{ce qui limite, c'est la latence}, pas la capacité du GPU.
+
+\noindent\textbf{Le trou du redémarrage est bouché.} Avant, un simple redémarrage pouvait vider la
+grappe en silence : les trois services disparaissaient, et un client ne pouvait pas distinguer une
+grappe vide d'une grappe occupée. Une tâche automatique au démarrage a été ajoutée (il n'y a pas de
+gestionnaire de services sur ce système) : elle attend le pilote et le réseau, puis lance le
+service par le chemin habituel — \textbf{75 secondes} du début à la réponse (20 s d'attente réseau
++ 55 s de démarrage du modèle). Preuve : \textbf{trois vrais redémarrages, une machine à la fois}.
+Et cette preuve a trouvé deux défauts réels dans le mécanisme (deux lancements simultanés qui se
+marchaient dessus ; un lancement dans le mauvais répertoire), tous deux corrigés et re-testés.
+
+\noindent\textbf{Internet coupé, l'IA continue.} Épreuve réalisée pour de vrai sur une machine :
+avec internet bloqué (y compris le DNS du campus), \textbf{19 réponses sur 19} ont été servies, à
+la vitesse normale. C'est cette même campagne qui a découvert qu'un \textbf{outil de réseau tiers}
+(un accès distant installé par un autre étudiant) était actif sur \emph{deux} des trois machines
+et réécrivait leurs réglages réseau. Un contrôle automatique « qui d'autre écrit sur cette
+machine ? » a été ajouté, puis le logiciel tiers a été \textbf{retiré proprement} (désinstallation
+réversible, sauvegarde d'état avant).
+
+\noindent\textbf{Honnêteté sur l'instrument.} Le script de mesure a lui-même évolué en
+\textbf{13 versions} : chaque défaut trouvé a été corrigé et daté. Exemple parlant : une version
+comptait les requêtes \emph{en échec} comme des réussites, et leurs attentes de 120 s comme des
+temps normaux — elle annonçait 93\,\% de débit en trop. Une seule version (la v4) a ses fichiers
+perdus par une erreur de sauvegarde ; ses chiffres restent cités, et la règle de nommage qui évite
+que ça se reproduise est écrite dans le dépôt.
+
+% =====================================================================
+\section{Ce qui est vérifié, ce qui reste, et ce qu'il faut décider}
+% =====================================================================
+\noindent\textbf{Vérifié le 02/10.} Les \textbf{60 tests automatiques passent} : ils protègent les
+fondations (la façon de compter les objets, la comparaison des barèmes, la recherche de failles)
+contre les régressions. Le contrôle de propreté du code (règles « F » et « B ») passe aussi. Le
+\textbf{barème de notation par photo (\code{audit-grading}) est figé} : une copie vit dans le
+dépôt, scellée par empreinte (\code{30ca55a0…}), et un test échoue si une seule ligne change —
+car un barème qui bouge en silence invaliderait tous les chiffres passés. Le grand audit de
+septembre a de plus recalculé \textbf{chaque figure} du dossier : le corpus se reproduit à l'identique, 4 cellules ont été
+corrigées (aucun verdict changé), et \textbf{trois défauts latents} ont été trouvés et corrigés —
+dont une fonction qui renvoyait toujours « tout va bien » (1,000) et la règle de consolidation des
+objets, désormais dans le code au lieu de scripts jetables.
+
+\noindent\textbf{Dette assumée.} \textbf{92 fichiers modifiés ne sont pas encore enregistrés dans Git} (le
+scellement de l'état dans Git reste à faire) ; les preuves des 28–29/09 vivent sur disque, pas dans
+le dépôt ; et le test de charge ne peut pas être lancé depuis ce poste d'analyse (il faut être sur
+le réseau de l'école) — c'est une limite d'accès, pas un défaut du code. Volumétrie : 67 fichiers
+Python (≈ 16\,000 lignes), 807 Mo sur disque dont ≈ 95\,\% de données.
+
+\noindent Les codes \textbf{AC1} à \textbf{AC12} sont les promesses numérotées du cahier des
+charges ; chaque ligne dit où on en est : \OK{} tenu · \PART{} partiel · \KO{} manqué.
+
+\begin{center}
+\begin{minipage}[t]{0.49\linewidth}
+\footnotesize\sffamily
+\begin{tabular}{@{}llp{0.55\linewidth}@{}}
+\toprule
+\textbf{\#} & & \textbf{Promesse et état}\\
+\midrule
+AC1 & \KO & Identifier ≥ 70\,\% des objets : \textbf{20,8\,\%} — échec, cause connue\\
+AC2 & \OK & Le texte annoncé est réellement présent ≥ 90\,\% : 94\,\%\\
+AC3 & \OK & Réponses toujours au bon format : 144/144\\
+AC4 & \OK & Temps par photo < 10 s : 95\,\% sous 3,76 s\\
+AC5 & \OK & Marque inexistante inventée < 5\,\% : 0\,\%\\
+AC6 & \OK & Relancer le test donne la même chose : 144/144\\
+\bottomrule
+\end{tabular}
+\end{minipage}\hfill
+\begin{minipage}[t]{0.49\linewidth}
+\footnotesize\sffamily
+\begin{tabular}{@{}llp{0.55\linewidth}@{}}
+\toprule
+\textbf{\#} & & \textbf{Promesse et état}\\
+\midrule
+AC7 & \OK & L'analyse tourne internet coupé : 3/3 machines\\
+AC8 & \OK & Corpus figé : 144 photos, 11 exclues tracées\\
+AC9 & \PART & Base de failles rejouée + 60 cas : mesuré ; relecture humaine à faire\\
+AC10 & \KO & Retrouver la bonne fiche produit : cible 80\,\% du premier coup (92\,\% dans les trois premiers choix) ; aujourd'hui 37\,\% / 56\,\% — échec\\
+AC11 & \TODO & Chaîne photo → PDF scellé + tests de falsification\\
+AC12 & \PART & Un test par message d'erreur (20 codes) : 0/20\\
+\bottomrule
+\end{tabular}
+\end{minipage}
+\end{center}
+
+\noindent\textbf{Où en sont les jalons.} \textbf{G0} (socle + corpus) : fermé le 24/09.
+\textbf{G1} (base de failles) : les trois critères techniques sont mesurés depuis le 29/09 — il
+reste la \textbf{relecture humaine des 60 cas} et la décision de filtre ci-dessus ; échéance
+19/10. \textbf{G2} (recherche produits + 200 cas) : 02/11 — aujourd'hui 37\,\% au premier choix
+contre 80\,\% visés, le levier identifié est une table d'alias d'environ 50 entrées. \textbf{G3/G4}
+(03–30/11) : chaîne photo → PDF, journal scellé, signature, tests de falsification.
+\textbf{G5–G7} (décembre) : interface de démonstration, régénération de tous les chiffres, gel
+final du 15/12.
+
+\noindent\textbf{Prochains pas, dans l'ordre.} (1)~\emph{Enregistrer l'état dans Git} : le geste le moins
+coûteux et le plus utile (92 fichiers en attente). (2)~\emph{Trancher le filtre « matériel
+seulement »} et relire les 60 cas : cela ferme G1. (3)~\emph{G2} : index de recherche produits + 200 cas + table
+d'alias. (4)~\emph{La confiance croisée} (accord entre photos × existence de la fiche officielle)
+puis le journal scellé, la signature et le PDF.
+
+\noindent\textbf{Deux questions attendent le tuteur.} \emph{Q3} — photographier 5–8 vrais objets
+(≈ 50–60 €, une séance) pour avoir des photos « propres », ou retirer ce critère en écrivant
+pourquoi. \emph{Q8} — le \textbf{FCC ID} (le numéro d'homologation imprimé sur les appareils) :
+aujourd'hui zéro ligne de code et zéro donnée, mais deux de ces numéros sont déjà lus correctement
+par l'OCR sur 144 photos ; recommandation : \emph{mesurer} d'abord sur ~30 photos dédiées avant de
+décider, car il n'existe aucun tableau officiel reliant FCC ID et fiches produits CPE.
+
+\vspace{1.5mm}
+\begin{tcolorbox}[colback=primary!4,colframe=primary!45,boxrule=0.5pt,arc=2pt,
+  left=6pt,right=6pt,top=5pt,bottom=5pt]
+{\footnotesize\sffamily\textbf{En une phrase.} Au 2 octobre 2026, l'infrastructure est finie et
+rejouable, la chaîne des failles est prouvée mais attend une décision de filtre, et la
+reconnaissance est \emph{mesurée en échec} face à sa cible — mais son obstacle est identifié,
+chiffré et actionnable : le système \textbf{lit} les marques sur les étiquettes (77\,\% de marques
+justes quand le texte est lisible), il ne les \textbf{reconnaît} pas encore (10\,\% sinon). Le
+prochain levier n'est pas de mieux questionner le modèle : c'est de prendre des photos où la
+marque est vraiment lisible.}
+\end{tcolorbox}
+
+{\scriptsize\sffamily\color{primary!80}
+\noindent\textbf{Sources :} \code{cahiers/CDC-v3.1}, \code{CDS-v2.1} · \code{docs/06} (§8–§21) ·
+\code{docs/02} (décisions D1–D15) · \code{benchmarks/cve.md}, \code{results.md} ·
+\code{infra/README.md} · \code{evidence/2026-09-28/}, \code{2026-09-29/} · \code{tests/}.
+Chaque chiffre de ce document s'y retrouve daté.}
+
+\end{document}

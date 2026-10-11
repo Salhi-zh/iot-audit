@@ -1,0 +1,19 @@
+{
+  "generated": "2026-10-06T15:10:48+02:00",
+  "hostname": "zabeth21",
+  "model": "Qwen2.5-VL-7B-Instruct-GPTQ-Int4",
+  "model_path": "/home/msalhi/models/Qwen2.5-VL-7B-Instruct-GPTQ-Int4",
+  "model_revision": "85acc985866e9240a9f9334e19903fbc7a2b7944",
+  "model_revision_source": "/home/msalhi/models/Qwen2.5-VL-7B-Instruct-GPTQ-Int4/.cache/huggingface/download/*.metadata (lu : une seule valeur)",
+  "weights_files": { "model-00001-of-00002.safetensors": "25aab8ca505d813064977370448eee9d4a24d9fe86b5cc51f3ef2ae27626a35e", "model-00002-of-00002.safetensors": "d380b11007431ef26c300a7d7315ac577eedf290b4df34584f5d7708fc70e121" },
+  "weights_sha256": "663eb1924045c67fae4342d3cafebed8d18355dd6c0d29aaeab79b4599da7813",
+  "weights_bytes_total": 6928523704,
+  "vllm_version": "0.29.0",
+  "torch_version": "2.13.0+cu132",
+  "torch_cuda": "13.2",
+  "gpu": "NVIDIA GeForce RTX 3060",
+  "driver": "615.71.09",
+  "served_model_name": "qwen2.5-vl-7b",
+  "port": 8000,
+  "open": [ "egress_blocked_test", "latency_p50_s" ]
+}

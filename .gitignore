@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+.venv/
+venv*/
+.mypy_cache/
+corpus/
+evidence/
+logs/
+*.db
+*.sqlite*
+*.pdf
+*.aux
+*.log
+*.out

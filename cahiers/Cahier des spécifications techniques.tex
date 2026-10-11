@@ -1,0 +1,344 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{fontspec}
+\setmainfont{DejaVu Sans}
+\setmonofont{DejaVu Sans Mono}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage[french]{babel}
+\frenchsetup{AutoSpacePunctuation=false}
+\usepackage{amsmath,amssymb}
+\usepackage{longtable,array,booktabs}
+\usepackage[table]{xcolor}
+\usepackage{enumitem}
+\usepackage{fancyvrb}
+\usepackage{pifont}
+\usepackage{hyperref}
+\usepackage[normalem]{ulem}
+\setlist[itemize]{leftmargin=1.4em,itemsep=2pt,topsep=4pt}
+\setlist[enumerate]{leftmargin=1.7em,itemsep=2pt,topsep=4pt}
+\newcommand{\code}[1]{\texttt{\detokenize{#1}}}
+\newcommand{\fait}{\textcolor{green!45!black}{\ding{51}}}      % ✅
+\newcommand{\encours}{\textcolor{blue!65!black}{\ding{46}}}   % 📝
+\newcommand{\afaire}{\textcolor{orange!85!black}{$\bigcirc$}}  % pas commencé
+\hypersetup{colorlinks=true,linkcolor=black,urlcolor=blue}
+\setlength{\tabcolsep}{3pt}
+\emergencystretch=2em
+\tolerance=2000
+\setlength{\LTpre}{6pt}\setlength{\LTpost}{6pt}
+\renewcommand{\arraystretch}{1.15}
+\pagestyle{plain}
+\hypersetup{pdftitle={CDS}}
+\begin{document}
+\begin{center}{\LARGE\bfseries Cahier des spécifications techniques — v2.1\par}\end{center}\vspace{4pt}
+\begin{flushleft}\textbf{Projet} : Reconnaissance d'objets connectés pour audit de sécurité IoT\end{flushleft}
+
+\begin{flushleft}\textbf{Auteur} : Mohamed Salhi — Polytech Lille / ENSA Kénitra · \textbf{Tuteur} : Thomas Vantroys\end{flushleft}
+
+\begin{flushleft}\textbf{Version} : 24/09/2026 · \textbf{Statut} : version de référence — remplace toutes les versions antérieures.\end{flushleft}
+
+\textbf{Compagnon} : le cahier des charges (CDC-v3.1) porte le \textbf{quoi} (périmètre, chiffres mesurés, critères d'acceptation, jalons) ; le présent document porte le \textbf{comment} : comment c'est construit, sur quelles machines, avec quelles garanties.
+
+\begin{quote}\small \textbf{Comment lire ce document.} Écrit \textbf{sans prérequis technique} ; chaque terme utile est expliqué au passage (un lexique complet est dans le CDC §15). Les statuts sont : \fait fait et prouvé · \encours commencé mais incomplet · \afaire pas commencé. Tout chiffre vient d'une mesure datée.\end{quote}
+\medskip\hrule\medskip
+\section*{1. Les règles de fabrication du logiciel}
+\begin{enumerate}  \item \textbf{Les étapes se parlent avec des formulaires fixes.} Chaque étape du traitement transmet à la suivante un objet de type défini (pas un dictionnaire libre où n'importe quoi peut se glisser). Conséquence : un test peut vérifier une étape \textbf{à la seule}, sans rien lancer d'autre.
+  \item \textbf{Une base de données simple et locale.} Tout est stocké dans des fichiers SQLite (un format de base de données qui tient dans un fichier, sans serveur à administrer), en mode d'écriture sûre : un seul programme écrit, les autres lisent sans se gêner.
+  \item \textbf{Ça tourne sur une seule machine.} La chaîne complète fonctionne sur une machine de 12 Go de mémoire graphique (et même sur le processeur seul pour la partie recherche de fiches/failles). Le cluster de l'école sert à accélérer les tests, il n'est \textbf{jamais indispensable}.
+  \item \textbf{Fermeture d'internet pendant l'audit.} Pendant un traitement, \textbf{aucune requête ne sort} vers l'extérieur — prouvé le 16/09 : les sites internet de référence étaient bloqués et l'analyse a quand même tourné.
+  \item \textbf{Le code fait foi.} Ce document décrit les choix ; pour le détail d'un algorithme, c'est le code qui dit la vérité (écrit pour être lu).
+\end{enumerate}
+
+\medskip\hrule\medskip
+\section*{2. Les machines et le modèle d'IA retenus (faits mesurés)}
+\subsection*{2.1 Le modèle d'IA}
+\begin{itemize}  \item \textbf{Modèle retenu} : \texttt{Qwen2.5-VL-7B-Instruct} en version \textbf{compressée 4 bits} (une compression nécessaire pour tenir dans les 12 Go de la carte graphique — voir le choix détaillé au CDC §3.1).
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Comment il est servi} : par le logiciel \textbf{vLLM 0.29.0} qui expose le modèle sur le réseau local (port 8000). Poids : ≈ 6,9 Go ; mémoire réellement utilisée : \textbf{8 962 Mo sur 12 288 Mo} mesurée le 14/09.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Réponses en format rigide} : le modèle est contraint de répondre en \textbf{JSON} (le format d'échange standard des logiciels : paires « clé : valeur », sans phrase autour), température \textbf{0} (aucun hasard), \textbf{640 mots maximum} par réponse — trois réglages \textbf{figés avant les tests}. Résultat : 0 réponse mal formée, 0 réponse coupée en plein milieu sur les 144 photos.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Rappel du choix} (détail et corrections datées au CDC §3.1) : 79/144 pour le modèle retenu contre 53 pour la génération suivante (écart réel), et un modèle concurrent écarté car il respecte mal le format (21 réponses sur 144 hors format).
+\end{itemize}
+
+\subsection*{2.2 Les machines de l'école}
+\begin{itemize}  \item Trois machines identiques : processeur i9, 62 Go de RAM, carte graphique \textbf{RTX 3060 de 12 Go}, système sans gestionnaire de services (tout se lance à la main, par port), pilotes graphiques \textbf{alignés entre les trois}, recette de contrôle \textbf{10/10} (15/09).
+\end{itemize}
+
+\begin{itemize}  \item \textbf{État au 24/09} : relevés du jour — 20h56 une machine injoignable → 21h11 deux machines en service → \textbf{21h59 les trois en service}, temps dégradé 2,1 s / 2,1 s / 5,1 s sur 4 photos, \textbf{réponses identiques entre les trois machines}.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Ces machines sont partagées avec d'autres étudiants} : à un moment, l'une d'elles était saturée par un logiciel tiers (11,6 Go sur 12 Go de mémoire graphique) et un réseau privé tiers était actif dessus. \textbf{Décision consignée (24/09)} : périmètre contractuel = une machine saine ; les trois ne sont qu'un banc d'accélération.
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{3. L'organisation du traitement, étape par étape}
+Chaque flèche ci-dessous est un \textbf{type de données fixe}, pas une boîte noire :
+
+\begin{Verbatim}[fontsize=\small]
+[Photo] ──► 1. Lecture par le modèle de vision (+ lecture du texte)
+                 │  ▼ sortie brute du modèle (marque, modèle, type, texte lu)
+             2. Consolidation (accord entre photos × vérification officielle)
+                 │  ▼ identification consolidée + statut
+             3. Résolution de fiche produit (recherche approximative)
+                 │  ▼ candidat(s) CPE + score
+             4. Recherche de failles connues (locales, en Python)
+                 │  ▼ liste de CVE (+ mention « niveau produit »)
+             5. Rapport : journal scellé + PDF
+\end{Verbatim}
+\subsection*{3.1 Les jeux de valeurs fermés}
+\sloppy
+\begin{longtable}{|p{0.200\linewidth}|p{0.711\linewidth}|}
+\hline
+\textbf{Domaine} & \textbf{Valeurs autorisées} \\ \hline
+\endhead
+\textbf{Type d'objet} & prise, caméra, ampoule, routeur, enceinte \textbf{+ \texttt{other}} (le « je ne sais pas ») \\ \hline
+\textbf{Statut d'identification} & identifié / identifié avec réserve / non identifié — \textbf{trois valeurs, jamais deux} (un système qui ne peut que répondre « oui » ne peut pas reconnaître son ignorance) \\ \hline
+\textbf{Niveau de preuve} & correspondance exacte au produit / plage de version / simple vendeur — exposé tel quel à l'auditeur (§9.3) \\ \hline
+\textbf{D'où vient l'étiquetage} & catégorie officielle / nom de fichier / annonce de vente / saisie manuelle — traçable pour détecter les fuites de réponse \\ \hline
+\end{longtable}
+\subsection*{3.2 Les formulaires échangés entre étapes}
+\sloppy
+\begin{longtable}{|p{0.180\linewidth}|p{0.731\linewidth}|}
+\hline
+\textbf{Élément transmis} & \textbf{Contenu essentiel} \\ \hline
+\endhead
+\textbf{Sortie du modèle de vision} & marque, modèle, type d'objet, texte lu sur l'objet, « confiance ressentie » par le modèle (\textbf{jamais affichée} à l'utilisateur : elle n'est pas fiable) \\ \hline
+\textbf{Candidat de fiche produit} & code CPE, fabricant, produit, version, scores, méthode employée \\ \hline
+\textbf{Résultat de faille} & identifiant de la faille, sévérité, date, \textbf{niveau de preuve} (produit exact / plage de version / vendeur entier) \\ \hline
+\textbf{Identification finale} & marque, modèle, statut, nombre de photos, \textbf{accord} et \textbf{résolvabilité} (§8), distribution des réponses, fiches et failles associées \\ \hline
+\textbf{Provenance du traitement} & empreintes numériques (empreinte = empreinte digitale d'un fichier) des poids du modèle, de la consigne et du schéma de réponse ; versions du logiciel ; \textbf{empreinte de la base des failles} ; dates de début et de fin \\ \hline
+\textbf{Événement de journal} & numéro de ligne \textbf{toujours croissant} (résiste à une horloge qui dérive), étape, message, charge utile, horodatage \\ \hline
+\textbf{Entrée photo} & identifiant, empreinte, provenance, licence, date de collecte, dimensions, présence ou non de texte lisible \\ \hline
+\end{longtable}
+\subsection*{3.3 Ce que le modèle doit obligatoirement renvoyer}
+Un objet JSON à champs fixes : \texttt{brand}, \texttt{model}, \texttt{category}, \texttt{visible\_\allowbreak{}text}, \texttt{identification\_\allowbreak{}basis} — \textbf{aucun champ supplémentaire toléré}, longueur maximale par champ, type d'objet pris dans la liste fermée (§3.1). Ce format garantit une réponse \textbf{lisible par la machine}, pas son exactitude.
+
+\medskip\hrule\medskip
+\section*{4. Les quatre bases de données locales}
+\sloppy
+\begin{longtable}{|p{0.148\linewidth}|p{0.590\linewidth}|p{0.159\linewidth}|}
+\hline
+\textbf{Base} & \textbf{Ce qu'elle contient réellement} & \textbf{État} \\ \hline
+\endhead
+\textbf{Photos du projet} (500 Ko) & 48 objets, 144 photos utilisables + 11 retirées, 288 relevés de lecture de texte, 2 traitements enregistrés ; les tables de résultats bruts et de cas de calibration existent mais sont \textbf{encore vides} & \fait vérité terrain gelée \\ \hline
+\textbf{Dictionnaire des produits CPE} (463 Mo) & \textbf{1 838 235 fiches} au total, dont \textbf{64 842} concernent du matériel (le périmètre du projet) ; empreinte d'identification enregistrée (14/09) & \fait \\ \hline
+\textbf{Base des failles NVD} (154 Mo, importée le 24/09) & \textbf{121 719 failles} et \textbf{324 470 critères matériels} répartis sur \textbf{873 fabricants} ; les 4 fichiers d'origine sont tracés par empreinte ; statuts réellement présents : 83 617 modifiées, 23 569 analysées, 10 855 différées, \textbf{3 559 retirées par le NVD} (et conservées telles quelles, §7.6), 119 diverses & \fait premier import — les preuves complètes du §7 restent \afaire \\ \hline
+\textbf{Référentiel de vérification du texte} & un jeu public annoté (COCO-Text) servant à noter notre outil de lecture & \fait \\ \hline
+\end{longtable}
+Toutes les photos publiables portent leur \textbf{adresse d'origine, leur licence (CC-BY / CC-BY-SA) et leur empreinte} ; les fichiers d'images ne sont \textbf{pas diffusés} avec le rapport.
+
+\medskip\hrule\medskip
+\section*{5. La lecture automatique du texte (OCR) — un aide, pas une vérité}
+\begin{itemize}  \item \textbf{Deux logiciels} comparés côte à côte (PaddleOCR et OnnxTR) ; on retient un texte si \textbf{l'un ou l'autre} le lit (choix du 15/09 : 50 photos avec texte, 94 sans, sur 144).
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Trois mesures, trois situations} — lisons-les du plus favorable au plus réaliste :
+\end{itemize}
+
+\sloppy
+\begin{longtable}{|p{0.209\linewidth}|p{0.295\linewidth}|p{0.392\linewidth}|}
+\hline
+\textbf{Situation} & \textbf{Résultat} & \textbf{En clair} \\ \hline
+\endhead
+On dessine le rectangle autour du texte & \textbf{66 \%} de réussite (1 384 textes, fourchette 63–68 \%) & il recopie bien les 2 textes sur 3 quand on lui montre où chercher \\ \hline
+Photo entière, gros plan & \textbf{35 \%} (600 photos, 2 604 mots, fourchette 32–38 \%) & il lit environ 1 mot sur 3 \\ \hline
+Vraie vie : trouver puis lire & \textbf{10 \%} (12 sur 120, fourchette 6–17 \%) & \textbf{la chaîne complète est faible} — on n'a pas le droit de compter dessus \\ \hline
+\end{longtable}
+\begin{itemize}  \item \textbf{Rôle} : alimenter le champ « texte lu » et le drapeau « photo contient du texte » ; remplacer \textbf{jamais} l'étiquetage humain. Quand un modèle affirme avoir lu une étiquette, le système vérifie que le texte est bien présent (critère AC2 du CDC : 94 \% de conformité mesurée).
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{6. Retrouver la bonne fiche produit (résolution CPE)}
+\begin{itemize}  \item \textbf{Comment ça marche} : on cherche d'abord le \textbf{fabricant exact} (petit dictionnaire d'alias pour les orthographes : « tp-link », « tplink », « tp link »), puis on classe les produits par \textbf{similarité de mots} (fonction de rapprochement qui ignore les mots superflus), puis on décide par \textbf{marge} : si le meilleur candidat n'est pas nettement devant le deuxième, on refuse de trancher.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Ses seuils} : acceptation automatique à \textbf{0,90} ; plancher à \textbf{0,60} (en dessous : refus explicite, jamais de réponse approximative) ; marge minimale \textbf{0,08} entre le 1\textsuperscript{er} et le 2\textsuperscript{e}. Méthode de réglage : on balaie les seuils et on garde \textbf{le plus souple qui garde une fiabilité ≥ 95 \%}. \textbf{Ce réglage définitif attend le banc de 200 cas (porte G2).}
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Index de recherche rapide (FTS5)} : prévu pour retrouver un produit même mal orthographié — \textbf{pas encore en place} (constat du 24/09) \afaire.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{État actuel du banc de mesure} : sur 68 cas volontairement dégradés : \textbf{37 \% au 1\textsuperscript{er} choix, 56 \% dans le top 3}, contre des cibles de 80 \% et 92 \% — \textbf{échec public} (critère AC10). Causes diagnostiquées : des produits grand public \textbf{absents} du dictionnaire, deux orthographes concurrentes sans table d'alias, et un refus par marge volontairement prudent. \textbf{Levier identifié} : un tableau d'alias manuel d'environ 50 entrées.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Refus explicites} : \texttt{E\_\allowbreak{}NO\_\allowbreak{}CPE\_\allowbreak{}MATCH} (aucune fiche trouvée) et \texttt{E\_\allowbreak{}CPE\_\allowbreak{}AMBIGUOUS} (plusieurs fiches plausibles) — le système présente ses doutes plutôt qu'une fausse certitude.
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{7. La base locale des failles (NVD) — première importation faite le 24/09}
+\subsection*{7.1 D'où viennent les données et comment on les trace}
+Les fichiers officiels annuels du NVD sont téléchargés une fois, conservés sur disque, et \textbf{signés par empreinte} (sha256 — l'empreinte digitale du fichier) : nom, empreinte, date de publication, date d'import, nombre de lignes et de failles. C'est cette traçabilité qui rend un rapport reproductible : le rapport dit exactement \textbf{quel fichier de failles} il a consulté.
+
+\subsection*{7.2 Ce qui est conservé pour chaque faille}
+L'identifiant (ex. CVE-2024-1234), son \textbf{statut officiel brut} (dont les \textbf{3 559 failles retirées} par le NVD — on les garde pour ne jamais se demander « pourquoi celle-là a disparu ? »), les dates, la description, et la sévérité avec son score de criticité.
+
+\subsection*{7.3 Les critères d'association à un produit}
+Une ligne par association : le \textbf{motif officiel original} conservé tel quel (c'est la pièce montrant \textit{pourquoi} cette faille remonte), le fabricant, le produit, la version, les quatre bornes de plage (début/fin, inclus/exclus), les drapeaux « vulnerable », « exclure » et l'opérateur logique — avec interdiction de doublons.
+
+\subsection*{7.4 On ne garde que le matériel}
+Seules les associations vers du \textbf{matériel} (\texttt{part='h'}) sont importées — \textbf{64 842 entrées matérielles sur 1 838 235} au total. Le reste (logiciels, systèmes d'exploitation) est écarté au fil du téléchargement, sans jamais charger une année entière en mémoire.
+
+\begin{quote}\small \textbf{Ce que ce filtre coûte, mesuré le 29/09/2026} : pour les vendeurs du corpus du projet, la base ne garde que \textbf{10 failles sur 11 714} (0,09 \%) — TP-Link, D-Link, Hikvision, AVM, Philips, Zyxel, MikroTik : \textbf{zéro} faille matérielle sur 2021–2024, alors que les mêmes produits en ont des centaines classées \texttt{part='o'} (système) ou \texttt{part='a'} (application). Voir CDC §14.3.10 et \texttt{benchmarks/cve.md} §2.\end{quote}
+\subsection*{7.5 On peut relancer l'import sans risque}
+Si le schéma existe déjà, on ne crée rien deux fois ; l'écriture ignore les doublons. \textbf{Relancer l'import doit donc produire exactement les mêmes comptes} — c'est la preuve exigée par la porte G1, et elle est \textbf{faite le 29/09}. Un compteur de progression permet de reprendre au milieu d'un fichier si le téléchargement est interrompu.
+
+\textbf{Nuance apportée le 29/09 :} relancer le \textbf{même} fichier ne prouve que la \textit{provenance} — son empreinte le fait sauter avant toute écriture, donc le chemin d'écriture n'est jamais exécuté. Le banc rejoue donc les flux une \textbf{troisième} fois sous un autre nom, ce qui force l'écriture : les comptes de données restent identiques et il n'y a \textbf{aucun doublon}. Les deux passes sont décrites dans \texttt{benchmarks/cve.md} §3.
+
+\subsection*{7.6 Les failles retirées restent visibles}
+Si le NVD retire une faille, elle est \textbf{conservée avec son statut} : un rapport antérieur qui la mentionne garde son explication. La recherche les met à part et les signale, sans les mélanger aux failles actives.
+
+\begin{quote}\small \textbf{État (24/09, 21h36)} : \textbf{premier import exécuté} — 4 années (2021–2024), \textbf{121 719 failles / 324 470 critères matériels en 11 secondes}, empreinte par fichier. \textasciitilde{}\textasciitilde{}Porte G1 non fermée : deuxième import sans doublon et vérification à la main de 60 cas \afaire ; le temps de recherche n'a été mesuré que sur 6 requêtes (3,5 ms).\textasciitilde{}\textasciitilde{} \textit{(périmé — voir l'état du 29/09 ci-dessous)}\end{quote}
+\begin{quote}\small \textbf{État (29/09, 13h50)} — banc \texttt{benchmarks/run\_\allowbreak{}cve.py}, résultat complet dans \texttt{benchmarks/cve.json} : - \textbf{rejeu sans doublon} : 3 passes sur une base neuve (flux d'origine, mêmes noms, copies renommées) ⇒ comptes de données \textbf{identiques}, \texttt{COUNT(*) = COUNT(DISTINCT …)}, \textbf{0 doublon} ✓ ; - \textbf{60 cas} ⇒ \textbf{0 faux négatif, 0 faux positif} ✓ — vérité terrain re-dérivée des \texttt{.json.gz} \textbf{bruts} par un lecteur indépendant de l'ingestion ; - \textbf{latence} : p95 \textbf{0,3–0,6 ms} sur 60 requêtes distinctes (600 exécutions), cible 50 ms ✓ ; - \afaire \textbf{reste la relecture humaine des 60 cas} — et c'est précisément là que la décision \texttt{part='h'} doit être tranchée (CDC §14.3.10). - correction jointe : \texttt{feed\_\allowbreak{}versions.row\_\allowbreak{}count} annonçait le nombre de critères \textbf{produits} au lieu du nombre de lignes \textbf{insérées} ; corrigé dans le code et dans les quatre lignes déjà écrites (CDC §14.3.8).\end{quote}
+\medskip\hrule\medskip
+\section*{8. La confiance : deux vérifications croisées (et non une seule)}
+\begin{itemize}  \item \textbf{1\textsuperscript{er} vérification — l'accord} : le modèle est interrogé sur \textbf{plusieurs photos du même objet} (prises de côtés différents). S'il répond la même chose à chaque fois, il est « d'accord avec lui-même ». C'est utile, mais insuffisant : un modèle qui a mémorisé une réponse fausse sera d'accord avec lui-même aussi.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{2\textsuperscript{e} vérification — la résolvabilité} : la réponse consensuelle \textbf{existe-t-elle réellement} dans le dictionnaire officiel des produits ? Si la marque renvoyée n'existe dans aucune fiche, la réponse est inventée.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Le cas dangereux} : accord très élevé \textbf{et} résolvabilité faible = \textbf{réponse inventée, mais répétée avec assurance}. C'est précisément le cas le plus fréquent observé sur nos tests — d'où la règle : ce cas est \textbf{refusé} (statut « non identifié »), jamais affiché comme une réussite.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{La confiance que le modèle affirme lui-même n'est jamais montrée à l'utilisateur} : elle n'est pas fiable (écart mesuré entre ce qu'il déclare et ce qu'il fait : déclaré − juste = \textbf{−32 points} sur le banc de calibration).
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Aucun score de risque agrégé} ; chaque faille remontée porte la mention « niveau produit » (§9.3).
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{9. Chercher les failles connues d'un produit}
+\textbf{Validé le 24/09} : \textbf{40 tests automatiques passent} ; sur la vraie base de 324 470 critères, une recherche prend \textbf{1,5 ms en médiane, 3,5 ms en dégradé} (6 essais) — largement sous la cible contractuelle de 50 ms.
+
+\textbf{Mesuré le 29/09} sur \textbf{60 requêtes distinctes} (et 600 exécutions) : p50 \textbf{0,05–0,13 ms}, p95 \textbf{0,3–0,6 ms}, max 5,2 ms — cible de 50 ms tenue avec trois ordres de grandeur de marge. Les 60 cas et le rejeu sans doublon sont produits par \texttt{benchmarks/run\_\allowbreak{}cve.py} ; il reste la relecture \textbf{humaine} des 60 cas, et la décision de périmètre \texttt{part='h'} (CDC §14.3.10) qu'aucun test ne peut trancher.
+
+\subsection*{9.1 Le tri préalable (en base de données) ne tranche rien tout seul}
+Une première requête élimine l'essentiel et ramène des \textbf{candidats larges} (fabricant exact, produit exact \textbf{ou} tout produit du fabricant) ; la décision finale se prend ensuite en Python, sur des fonctions simples qu'on peut tester une par une — plutôt que dans une requête compliquée que personne ne pourrait relire.
+
+\subsection*{9.2 Les plages de versions, évaluées en Python}
+Une faille concerne souvent une plage (« de 1.0 à 2.0 exclu »). La comparaison des versions se fait \textbf{en Python} et de façon lisible : comparaison \textbf{numérique} (donc « 1.10 » est bien plus récent que « 1.9 ») et une version d'essai (« 1.2.3-beta ») est considérée comme \textbf{antérieure} à sa version finale (« 1.2.3 »).
+
+\textbf{Le cas nominal du projet} : nous ne connaissons \textbf{pas} la version du logiciel interne (une photo ne le donne pas). Le résultat est alors marqué \textbf{\texttt{unresolved}} : « non résolu ». Il n'est ni déclaré concerné, ni déclaré non concerné \textbf{en silence} — c'est la seule manière de ne pas fabriquer de faux négatifs, le défaut le plus grave d'un tel outil.
+
+\subsection*{9.3 Niveau de preuve, affiché tel quel}
+Trois niveaux, jamais confondus : \textbf{produit exact} (preuve forte) > \textbf{plage de version} (preuve forte) > \textbf{vendeur entier} (preuve faible, quand le critère ne nomme que le fabricant). L'auditeur voit ce niveau dans le résultat ; un match faible n'est jamais fusionné avec un match fort. Chaque faille porte \textbf{\texttt{triage\_\allowbreak{}scope='product'}} — le champ qui, dans la base comme dans le PDF, interdit d'interpréter le résultat au niveau de l'exemplaire.
+
+\medskip\hrule\medskip
+\section*{10. Le journal scellé et la signature (intégrité du rapport)}
+\begin{itemize}  \item \textbf{Déjà prévu dans les formulaires} : la provenance complète (§3.2) et la ligne de journal avec numéro \textbf{toujours croissant} — le journal survit à une horloge qui dérive.
+\end{itemize}
+
+\begin{itemize}
+  \item \textbf{À construire (\afaire, portes G3/G4)} :
+\begin{enumerate}  \item \textbf{chaîne de scellement} : chaque ligne du journal est scellée avec la précédente (HMAC, une fonction cryptographique) — modifier une ligne casse toute la suite, la falsification est détectée à la ligne exacte ;
+  \item \textbf{signature de la dernière ligne} par une clé privée ; la clé publique est \textbf{imprimée dans le rapport} : un tiers vérifie le document \textbf{sans recevoir aucun secret} ;
+  \item l'empreinte de la base des failles est écrite dans chaque traitement ;
+  \item \textbf{6 tests d'altération} dont deux indispensables : un test de \textbf{fausse ligne créée avec la vraie clé, qui doit réussir} (la limite est démontrée, pas cachée) et un test « rapport modifié après coup ⇒ refus ».
+\end{enumerate}
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Formulation exacte à défendre} : le scellement prouve que le contenu \textbf{n'a pas changé après} la signature ; il ne prouve pas à lui seul l'identité du signataire — c'est le rôle de la signature à clé publique de la dernière ligne.
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{11. Le rapport PDF et l'interface (\afaire)}
+\begin{itemize}  \item \textbf{Contenu du PDF} : la photo, la fiche produit retenue avec ses candidats et scores, les failles du modèle avec leur niveau de preuve, la provenance complète, et \textbf{quatre mentions obligatoires} : triage au niveau produit, logiciel interne non déterminé, message non rassurant si aucune faille, date et empreinte de la base des failles utilisée.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Interface de démonstration} : une page web simple \textbf{ou} une commande en ligne — parcours complet exigé par la porte G5 (07/12) : envoyer une photo → lancer le traitement → récupérer le PDF → \textbf{le vérifier hors-ligne} avec la clé publique.
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{12. Temps de réponse mesurés et cas dégradés}
+\textit{Note de lecture} : le temps \textbf{dégradé} (p95) est le temps en deçà duquel se situent 95 requêtes sur 100 — c'est lui qu'on compare à la cible.
+
+\sloppy
+\begin{longtable}{|p{0.321\linewidth}|p{0.308\linewidth}|p{0.268\linewidth}|}
+\hline
+\textbf{Mesure} & \textbf{Valeur} & \textbf{Situation de mesure} \\ \hline
+\endhead
+Temps par image, médian / dégradé & 1,08 s / \textbf{1,88 s} & 12 mesures, 15/09 \\ \hline
+Temps dégradé en vraie chaîne (photo jamais vue) & \textbf{3,9 s} (max 5,5 s) & flux réel — la valeur honnête \\ \hline
+Débit sur les 3 machines ensemble & \textbf{57,9 requêtes/s} & banc de charge du 15/09 \\ \hline
+Panne d'un nœud en plein traitement & \textbf{2400 requêtes sur 2400 servies}, 0 abandon & mode dégradé déjà testé \\ \hline
+Banc des 3 machines (24/09, 4 photos) & dégradé 2,1 / 2,1 / 5,1 s, réponses identiques & les trois en inférence réelle \\ \hline
+\textbf{Cible contractuelle} & dégradé \textbf{< 10 s} & \fait tenue avec une marge ×2,6 en flux réel \\ \hline
+\end{longtable}
+Les temps \textbf{ne sont jamais comparés entre protocoles différents sans le dire} (CDC §3.1).
+
+\textbf{Modes dégradés prévus} : base des failles indisponible → identification seule, message explicite ; machine perdue en cours de traitement → traitement partiel comptabilisé comme tel ; aucune faille trouvée → message non rassurant (\texttt{E\_\allowbreak{}NO\_\allowbreak{}CVE}).
+
+\medskip\hrule\medskip
+\section*{13. Licences, données personnelles, conformité}
+\begin{itemize}  \item Photos sous licences \textbf{CC-BY / CC-BY-SA} (Wikimedia Commons), avec adresse d'origine, licence et empreinte pour chacune ; \textbf{jamais diffusées} avec le livrable.
+\end{itemize}
+
+\begin{itemize}  \item Aucune donnée personnelle dans le corpus ; \textbf{aucun scan réseau}, aucune collecte de terrain (hors projet — articles 323-1 et suivants du Code pénal).
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Documents de conformité à produire avant la soutenance} : durée de conservation des données, principe de minimisation écrit — \afaire.
+\end{itemize}
+
+\begin{itemize}  \item Les données de localisation (EXIF) sont \textbf{retirées dès l'import}, avant tout stockage.
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{14. Sécurité d'exploitation (en clair)}
+\begin{itemize}  \item \textbf{Fermeture totale d'internet pendant un traitement} : règles de pare-feu écrites \textbf{en mémoire uniquement} (rien n'est écrit sur le système), autorisant seulement le réseau local, le serveur de noms et la boucle locale ; un \textbf{garde de 300 secondes} remet tout dans l'état automatiquement ; le script de restauration est exécuté \textbf{avant} d'appliquer quoi que ce soit. Appliqué puis restauré sur les trois machines le 16/09 — incident d'un réseau tiers détecté et réparé le jour même.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Mots de passe} : transmis par un canal indirect à deux sauts (poste → passerelle → machine), \textbf{jamais dans une ligne de commande} (visible par tous avec la commande \texttt{ps}) \textbf{ni dans un fichier}.
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Pas de gestionnaire de services} sur ce système : tout se lance et se vérifie à la main, par port et par numéro de processus, avec un script de recette automatique (version rapide + version approfondie).
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{15. Mesure, notation et reproductibilité}
+\subsection*{15.1 Un barème figé, un seul outil de notation}
+Le barème de notation des photos est \textbf{figé avant} toute mesure ; l'outil qui l'applique est \textbf{unique} et le même partout — \textbf{jamais recopié à la main}, jamais réécrit « de mémoire ».
+
+\subsection*{15.2 Par quoi on compte}
+Les marges d'erreur (fourchettes à 95 \%) ne s'appliquent qu'au niveau \textbf{objet} (48) : huit photos du même objet ne sont pas huit épreuves indépendantes. \textbf{Aucune affirmation de précision n'est validée sans fourchette au niveau objet} ; les chiffres comptés par photo ne sortent qu'avec la mention « indicatif ». Toute figure indique son unité de comptage.
+
+\subsection*{15.3 L'incident fondateur (conservé pour la mémoire)}
+Une \textbf{copie} de l'outil de notation, refaite « de mémoire », avait publié \textbf{77 \% au lieu de 45 \%} — 32 points trop haut — parce qu'elle écrasait les séparateurs lors du nettoyage des textes. Conséquence : la correspondance des outils est aujourd'hui \textbf{vérifiée automatiquement} (l'outil doit reproduire exactement les chiffres déjà publiés), pas relue à l'œil.
+
+\subsection*{15.4 Ce qui est déjà reproductible}
+Deux exécutions complètes d'une heure d'intervalle ont donné des réponses \textbf{identiques à la première} (144/144) ; les réglages (640 mots maximum, garde de fin de texte) ont été \textbf{figés avant les mesures}.
+
+\subsection*{15.5 La bande de sensibilité (règle anti-complaisance)}
+Chaque mesure est rejouée sous \textbf{4 barèmes de notation différents} (le plus permissif en 5\textsuperscript{e} point de la bande) : la \textbf{direction de la conclusion doit être la même sous les 4}. Les valeurs sont publiées \textbf{côte à côte} (borne la plus sévère et borne la plus souple), jamais fusionnées en un chiffre unique.
+
+\subsection*{15.6 État restant}
+\begin{itemize}  \item Figures principales \textbf{reproductibles} \fait (outil unique + manifestes figés).
+\end{itemize}
+
+\begin{itemize}  \item \textbf{Un ancien fichier d'agrégats n'est pas régénérable} (aucun script producteur conservé) — ❌ à réparer avant la porte G6 (14/12).
+\end{itemize}
+
+\begin{itemize}  \item Tables de résultats bruts du corpus : \textbf{vides} — les résultats publiés vivent dans les archives de mesure, pas encore en base.
+\end{itemize}
+
+\medskip\hrule\medskip
+\section*{16. Annexe — les formules utilisées}
+\textbf{Marges d'erreur (fourchette de Wilson, confiance 95 \%)} — utilisée pour tout pourcentage publié :
+
+$$\hat{p} \pm \tilde{\Delta} \quad\text{avec}\quad \tilde{\Delta} = \frac{z}{1 + \frac{z^2}{n}}\sqrt{\frac{\hat{p}(1-\hat{p})}{n} + \frac{z^2}{4n^2}} \quad (z = 1{,}96)$$
+
+\textit{Lecture} : \texttt{p̂} est le pourcentage observé, \texttt{n} l'effectif. Cette formule est préférée au calcul naïf parce qu'elle \textbf{reste valable pour de petits effectifs et près de 0 \% ou 100 \%} — exactement notre cas.
+
+\textbf{La confiance du projet, en deux comptages :}
+
+\begin{itemize}  \item \textbf{accord} = proportion de photos donnant la réponse la plus fréquente : $A = \dfrac{\max_t |\{i : t_i = t\}|}{N}$ (publié en fraction brute, ex. « 6 sur 8 », sans marge d'erreur) ;
+\end{itemize}
+
+\begin{itemize}  \item \textbf{résolvabilité} = meilleur score de rapprochement du consensus dans le dictionnaire officiel ;
+\end{itemize}
+
+\begin{itemize}  \item \textbf{décision} : accord élevé \textbf{et} résolvabilité faible ⇒ réponse inventée et répétée ⇒ \textbf{refus explicite}.
+\end{itemize}
+
+\end{document}

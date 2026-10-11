@@ -1,0 +1,39 @@
+# =============================================================================
+# ~/.ssh/config — WORKSTATION variant (orchestrate from your laptop)
+#
+# Copy the Host blocks below into ~/.ssh/config, then:
+#     chmod 600 ~/.ssh/config
+#     ssh zabeth21 'hostname'      # should print zabeth21
+#
+# All traffic is tunnelled through the portier gateway with ProxyJump, so this
+# host never needs direct routes to 172.26.145.0/24. Once the key is installed
+# (see scripts/bootstrap_ssh.sh) no password is ever prompted — which is what
+# lets the scripts run non-interactively (BatchMode=yes).
+# =============================================================================
+
+Host portier
+    HostName portier.polytech-lille.fr
+    Port 2222
+    User msalhi
+    IdentityFile ~/.ssh/id_zabeth
+    IdentitiesOnly yes
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
+
+# Shared options for the three GPU nodes (HostName comes from the blocks below).
+Host zabeth21 zabeth22 zabeth23
+    User msalhi
+    IdentityFile ~/.ssh/id_zabeth
+    IdentitiesOnly yes
+    ProxyJump portier
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
+
+Host zabeth21
+    HostName 172.26.145.71
+
+Host zabeth22
+    HostName 172.26.145.72
+
+Host zabeth23
+    HostName 172.26.145.73

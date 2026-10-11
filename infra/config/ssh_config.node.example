@@ -1,0 +1,49 @@
+# =============================================================================
+# ~/.ssh/config — NODE variant (orchestrate from zabeth22 or any node)
+#
+# Use this instead of the workstation config when you run the scripts from
+# *inside* the cluster. Nodes reach each other over the LAN (172.26.145.x) with
+# no gateway hop, which also makes sync_models.sh take the fast direct-rsync
+# path instead of relaying through the orchestrator.
+#
+# Install the key on all three nodes first (scripts/bootstrap_ssh.sh pushes to
+# every node), then:
+#     ssh zabeth23 'hostname'
+#
+# -----------------------------------------------------------------------------
+# 2026-09-17 — the IP patterns below are NOT optional.
+#
+# `sync_models.sh` runs its peer checks and its rsyncs against
+# `msalhi@172.26.145.NN`: it resolves the peer with `node_ip`, so it never uses
+# the alias. ssh applies `IdentityFile` / `IdentitiesOnly` only to a Host pattern
+# that actually MATCHES, so a name-only config silently falls back to the default
+# identities, the reachability test fails, and sync_models.sh relays 6.9 GB
+# through the orchestrator instead of copying over the LAN — the exact opposite
+# of what this file is for. Verified on the live cluster: with names only the
+# inner `ssh msalhi@172.26.145.72 true` failed; adding the IP patterns made all
+# six node-to-node directions succeed and sync_models.sh print
+# `zabeth23 -> zabeth21 : direct rsync (LAN)`.
+#
+# Authorising the public key on the nodes is also not sufficient on its own: the
+# node doing the push needs the PRIVATE key. Use
+# `scripts/bootstrap_ssh.sh --yes --node-to-node`, which installs both this
+# config and the key on every node (and says what that costs).
+# -----------------------------------------------------------------------------
+
+# Shared block: covers the aliases AND the LAN addresses the scripts use.
+Host zabeth21 zabeth22 zabeth23 172.26.145.71 172.26.145.72 172.26.145.73
+    User msalhi
+    IdentityFile ~/.ssh/id_zabeth
+    IdentitiesOnly yes
+    StrictHostKeyChecking accept-new
+    ServerAliveInterval 30
+    ServerAliveCountMax 3
+
+Host zabeth21
+    HostName 172.26.145.71
+
+Host zabeth22
+    HostName 172.26.145.72
+
+Host zabeth23
+    HostName 172.26.145.73

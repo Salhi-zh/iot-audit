@@ -1,0 +1,1841 @@
+{
+ "_note": "Preuve de la porte G1 : 2e import sans doublon, 60 cas, p95.",
+ "generated_at": "2026-10-06T00:38:42+0200",
+ "generator": "benchmarks/run_cve.py",
+ "db": "corpus/nvd.sqlite",
+ "db_bytes": 161255424,
+ "db_sha256": "6c28e00f7285e7b173144cb606a4c73160bfe5a629daadc77124237150ac2e4d",
+ "db_counts": {
+  "criteria": 324470,
+  "cves": 121719,
+  "parts": [
+   "h"
+  ]
+ },
+ "coverage_by_part": {
+  "_note": "CVE distinctes par vendeur du corpus et par `part` CPE, lues dans les flux BRUTS. Le projet n'ingere que `part='h'` : les colonnes `a` et `o` mesurent ce que ce filtre ecarte.",
+  "vendors": {
+   "mikrotik": {
+    "h": 0,
+    "a": 0,
+    "o": 16
+   },
+   "google": {
+    "h": 2,
+    "a": 1680,
+    "o": 3881
+   },
+   "dlink": {
+    "h": 0,
+    "a": 18,
+    "o": 800
+   },
+   "zyxel": {
+    "h": 0,
+    "a": 2,
+    "o": 133
+   },
+   "belkin": {
+    "h": 0,
+    "a": 0,
+    "o": 4
+   },
+   "huawei": {
+    "h": 1,
+    "a": 24,
+    "o": 1118
+   },
+   "tplink": {
+    "h": 0,
+    "a": 7,
+    "o": 225
+   },
+   "apple": {
+    "h": 2,
+    "a": 258,
+    "o": 2058
+   },
+   "samsung": {
+    "h": 3,
+    "a": 388,
+    "o": 462
+   },
+   "netgear": {
+    "h": 2,
+    "a": 26,
+    "o": 487
+   },
+   "amazon": {
+    "h": 0,
+    "a": 59,
+    "o": 16
+   },
+   "philips": {
+    "h": 0,
+    "a": 16,
+    "o": 7
+   },
+   "hikvision": {
+    "h": 0,
+    "a": 7,
+    "o": 12
+   }
+  },
+  "vendor_names": {
+   "mikrotik": [
+    "mikrotik"
+   ],
+   "google": [
+    "google"
+   ],
+   "dlink": [
+    "d-link",
+    "dlink"
+   ],
+   "zyxel": [
+    "zyxel"
+   ],
+   "belkin": [
+    "belkin"
+   ],
+   "huawei": [
+    "huawei"
+   ],
+   "tplink": [
+    "tp-link"
+   ],
+   "apple": [
+    "apple"
+   ],
+   "samsung": [
+    "samsung"
+   ],
+   "netgear": [
+    "netgear"
+   ],
+   "amazon": [
+    "amazon"
+   ],
+   "philips": [
+    "philips"
+   ],
+   "hikvision": [
+    "hikvision"
+   ]
+  },
+  "corpus_vendors": [
+   "amazon",
+   "apple",
+   "avm",
+   "d_link",
+   "google",
+   "hikvision",
+   "huawei",
+   "mikrotik",
+   "netgear",
+   "philips",
+   "samsung",
+   "tp_link",
+   "tuya",
+   "verisure",
+   "wemo",
+   "zyxel"
+  ]
+ },
+ "source": {
+  "per_feed": {
+   "nvdcve-2.0-2021.json.gz": {
+    "criteria_yielded": 92968,
+    "criteria_expected_in_db": 90646,
+    "null_match_criteria_id": 0,
+    "cves_in_feed": 23470,
+    "cves_rejected": 867,
+    "cpeMatch_skipped_negate": 0,
+    "cpeMatch_skipped_not_vulnerable": 80956,
+    "parts_seen": {
+     "a": 50530,
+     "o": 131672,
+     "h": 92968
+    }
+   },
+   "nvdcve-2.0-2022.json.gz": {
+    "criteria_yielded": 86988,
+    "criteria_expected_in_db": 85474,
+    "null_match_criteria_id": 0,
+    "cves_in_feed": 27555,
+    "cves_rejected": 1108,
+    "cpeMatch_skipped_negate": 0,
+    "cpeMatch_skipped_not_vulnerable": 85681,
+    "parts_seen": {
+     "a": 60357,
+     "o": 123807,
+     "h": 86988
+    }
+   },
+   "nvdcve-2.0-2023.json.gz": {
+    "criteria_yielded": 99578,
+    "criteria_expected_in_db": 98302,
+    "null_match_criteria_id": 0,
+    "cves_in_feed": 31444,
+    "cves_rejected": 795,
+    "cpeMatch_skipped_negate": 0,
+    "cpeMatch_skipped_not_vulnerable": 99433,
+    "parts_seen": {
+     "a": 58414,
+     "o": 134330,
+     "h": 99578
+    }
+   },
+   "nvdcve-2.0-2024.json.gz": {
+    "criteria_yielded": 50245,
+    "criteria_expected_in_db": 50048,
+    "null_match_criteria_id": 0,
+    "cves_in_feed": 39250,
+    "cves_rejected": 789,
+    "cpeMatch_skipped_negate": 0,
+    "cpeMatch_skipped_not_vulnerable": 50241,
+    "parts_seen": {
+     "a": 59101,
+     "o": 114915,
+     "h": 50245
+    }
+   }
+  },
+  "feeds_sha256": {
+   "nvdcve-2.0-2021.json.gz": "641b14cbd9f88185c11ac064cf42f19909afe385231982d9c5f93a573503cd3a",
+   "nvdcve-2.0-2022.json.gz": "8e407f5a3b8c3b2caa5a233caa30f99b45bcd997b475b29f9c6d6998f5aa6516",
+   "nvdcve-2.0-2023.json.gz": "331405b7eec5c3864503b7b02fd359d94c6b85129e7df104a8c1810a22701769",
+   "nvdcve-2.0-2024.json.gz": "40103bfe669335fc2e961869dc1a53bb9d13a12fbe1920deff2f22b672809db0"
+  },
+  "pairs_with_cves": 2310,
+  "h_criteria_qualifying": 13468
+ },
+ "idempotence": {
+  "db": "base neuve (jetable), pas la base de travail",
+  "duration_s": 20.5,
+  "pass1_originals": {
+   "counts": {
+    "feed_versions": 4,
+    "cves": 121719,
+    "criteria": 324470
+   },
+   "duplicates": {
+    "criteria": 0,
+    "cves": 0
+   },
+   "skipped": [
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "pass2_same_names": {
+   "counts": {
+    "feed_versions": 4,
+    "cves": 121719,
+    "criteria": 324470
+   },
+   "duplicates": {
+    "criteria": 0,
+    "cves": 0
+   },
+   "skipped": [
+    true,
+    true,
+    true,
+    true
+   ]
+  },
+  "pass3_renamed": {
+   "counts": {
+    "feed_versions": 8,
+    "cves": 121719,
+    "criteria": 324470
+   },
+   "duplicates": {
+    "criteria": 0,
+    "cves": 0
+   },
+   "skipped": [
+    false,
+    false,
+    false,
+    false
+   ]
+  },
+  "data_counts_identical_1_2_3": true,
+  "data_counts_compared": [
+   "cves",
+   "criteria"
+  ],
+  "feed_versions_by_pass": [
+   4,
+   4,
+   8
+  ],
+  "feed_versions_note": "la passe 3 ajoute 4 lignes de provenance : c'est le but (flux rejoues sous un autre nom pour forcer le chemin d'ecriture). Seules les tables de donnees doivent etre invariantes.",
+  "zero_duplicates_everywhere": true,
+  "rows_by_feed": {
+   "nvdcve-2.0-2021.json.gz": {
+    "feed_version_id": 1,
+    "row_count": 90646,
+    "cve_count": 23470,
+    "rows_present_for_feed_version": 90646
+   },
+   "nvdcve-2.0-2022.json.gz": {
+    "feed_version_id": 2,
+    "row_count": 85474,
+    "cve_count": 27555,
+    "rows_present_for_feed_version": 85474
+   },
+   "nvdcve-2.0-2023.json.gz": {
+    "feed_version_id": 3,
+    "row_count": 98302,
+    "cve_count": 31444,
+    "rows_present_for_feed_version": 98302
+   },
+   "nvdcve-2.0-2024.json.gz": {
+    "feed_version_id": 4,
+    "row_count": 50048,
+    "cve_count": 39250,
+    "rows_present_for_feed_version": 50048
+   },
+   "nvdcve-2.0-2021.json__replay.json.gz": {
+    "feed_version_id": 5,
+    "row_count": 0,
+    "cve_count": 23470,
+    "rows_present_for_feed_version": 0
+   },
+   "nvdcve-2.0-2022.json__replay.json.gz": {
+    "feed_version_id": 6,
+    "row_count": 0,
+    "cve_count": 27555,
+    "rows_present_for_feed_version": 0
+   },
+   "nvdcve-2.0-2023.json__replay.json.gz": {
+    "feed_version_id": 7,
+    "row_count": 0,
+    "cve_count": 31444,
+    "rows_present_for_feed_version": 0
+   },
+   "nvdcve-2.0-2024.json__replay.json.gz": {
+    "feed_version_id": 8,
+    "row_count": 0,
+    "cve_count": 39250,
+    "rows_present_for_feed_version": 0
+   }
+  }
+ },
+ "cases": {
+  "false_negatives_total": 0,
+  "false_positives_total": 0,
+  "cases_ok": 60,
+  "latency_distinct_queries": {
+   "n": 60,
+   "p50_ms": 0.235,
+   "p95_ms": 2.176,
+   "p99_ms": 3.887,
+   "max_ms": 4.306
+  },
+  "latency_all_executions": {
+   "n": 600,
+   "p50_ms": 0.02,
+   "p95_ms": 0.429,
+   "p99_ms": 1.567,
+   "max_ms": 4.306
+  },
+  "latency_repeat_per_query": 10,
+  "match_basis_histogram": {
+   "exact_product": 324,
+   "vendor_wildcard": 23,
+   "version_range": 6
+  },
+  "hits_unresolved": 6,
+  "target_ms_p95": 50.0,
+  "passes_p95_target": true,
+  "rows": [
+   {
+    "case": 1,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "proxpress_sl-m4024_ss385a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 1.814,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 2,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "ml-5012_ss146a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.425,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 3,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "proxpress_sl-m4070_ss390c",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.015,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 4,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "scx-5737_ss183a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.122,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 5,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "scx-4521_ss168a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.174,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 6,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "proxpress_sl-m3375fd_ss369b",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.102,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 7,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "xpress_sl-m2620_ss323a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.216,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 8,
+    "stratum": "vendeurs_du_corpus",
+    "vendor": "samsung",
+    "product": "scx-5639_st676a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.014,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 9,
+    "stratum": "vendor_wildcard_owed",
+    "vendor": "intel",
+    "product": "xeon_gold_6146",
+    "n_expected": 12,
+    "n_returned": 12,
+    "n_strong": 11,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 11,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 2.81,
+    "example_hits": [
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2021-0103"
+    ],
+    "ok": true
+   },
+   {
+    "case": 10,
+    "stratum": "vendor_wildcard_owed",
+    "vendor": "intel",
+    "product": "xeon_e3_1125c_v2",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.225,
+    "example_hits": [
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 11,
+    "stratum": "vendor_wildcard_owed",
+    "vendor": "intel",
+    "product": "core_i7-6560u",
+    "n_expected": 13,
+    "n_returned": 13,
+    "n_strong": 12,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 12,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 1.565,
+    "example_hits": [
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-33150",
+     "CVE-2021-0144",
+     "CVE-2021-0114"
+    ],
+    "ok": true
+   },
+   {
+    "case": 12,
+    "stratum": "vendor_wildcard_owed",
+    "vendor": "intel",
+    "product": "core_i7-5960x",
+    "n_expected": 14,
+    "n_returned": 14,
+    "n_strong": 13,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 13,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.659,
+    "example_hits": [
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2021-0157"
+    ],
+    "ok": true
+   },
+   {
+    "case": 13,
+    "stratum": "version_bounded",
+    "vendor": "ysoft",
+    "product": "safeq_server",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 1,
+    "basis": {
+     "version_range": 1
+    },
+    "first_query_ms": 0.637,
+    "example_hits": [
+     "CVE-2023-35833"
+    ],
+    "ok": true
+   },
+   {
+    "case": 14,
+    "stratum": "version_bounded",
+    "vendor": "siemens",
+    "product": "simatic_process_historian",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.32,
+    "example_hits": [
+     "CVE-2021-20093"
+    ],
+    "ok": true
+   },
+   {
+    "case": 15,
+    "stratum": "version_bounded",
+    "vendor": "dell",
+    "product": "inspiron_7590",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 1,
+    "basis": {
+     "version_range": 1
+    },
+    "first_query_ms": 0.423,
+    "example_hits": [
+     "CVE-2022-24410"
+    ],
+    "ok": true
+   },
+   {
+    "case": 16,
+    "stratum": "version_bounded",
+    "vendor": "intel",
+    "product": "quickassist_technology_driver",
+    "n_expected": 2,
+    "n_returned": 2,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 1,
+    "basis": {
+     "version_range": 1,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.635,
+    "example_hits": [
+     "CVE-2023-41252",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 17,
+    "stratum": "version_bounded",
+    "vendor": "dell",
+    "product": "inspiron_3470",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 1,
+    "basis": {
+     "version_range": 1
+    },
+    "first_query_ms": 0.107,
+    "example_hits": [
+     "CVE-2022-24410"
+    ],
+    "ok": true
+   },
+   {
+    "case": 18,
+    "stratum": "version_bounded",
+    "vendor": "cisco",
+    "product": "ic3000_industrial_compute_gateway",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 1,
+    "basis": {
+     "version_range": 1
+    },
+    "first_query_ms": 0.525,
+    "example_hits": [
+     "CVE-2023-20076"
+    ],
+    "ok": true
+   },
+   {
+    "case": 19,
+    "stratum": "version_bounded",
+    "vendor": "veritas",
+    "product": "netbackup_appliance",
+    "n_expected": 19,
+    "n_returned": 19,
+    "n_strong": 19,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 19
+    },
+    "first_query_ms": 3.595,
+    "example_hits": [
+     "CVE-2022-36992",
+     "CVE-2022-22965",
+     "CVE-2022-36990",
+     "CVE-2022-36989",
+     "CVE-2022-36993"
+    ],
+    "ok": true
+   },
+   {
+    "case": 20,
+    "stratum": "version_bounded",
+    "vendor": "apple",
+    "product": "iphone",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 1,
+    "basis": {
+     "version_range": 1
+    },
+    "first_query_ms": 0.345,
+    "example_hits": [
+     "CVE-2022-22592"
+    ],
+    "ok": true
+   },
+   {
+    "case": 21,
+    "stratum": "control_zero_cve",
+    "vendor": "canon",
+    "product": "lbp622cdw",
+    "n_expected": 0,
+    "n_returned": 0,
+    "n_strong": 0,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {},
+    "first_query_ms": 0.015,
+    "example_hits": [],
+    "ok": true
+   },
+   {
+    "case": 22,
+    "stratum": "control_zero_cve",
+    "vendor": "hp",
+    "product": "envy_inspire_7900e_242p6b",
+    "n_expected": 0,
+    "n_returned": 0,
+    "n_strong": 0,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {},
+    "first_query_ms": 0.021,
+    "example_hits": [],
+    "ok": true
+   },
+   {
+    "case": 23,
+    "stratum": "control_zero_cve",
+    "vendor": "hp",
+    "product": "381v5a",
+    "n_expected": 0,
+    "n_returned": 0,
+    "n_strong": 0,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {},
+    "first_query_ms": 0.01,
+    "example_hits": [],
+    "ok": true
+   },
+   {
+    "case": 24,
+    "stratum": "single_1_cve",
+    "vendor": "lenovo",
+    "product": "thinkagile_mx630_v3_firmware",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.532,
+    "example_hits": [
+     "CVE-2023-4607"
+    ],
+    "ok": true
+   },
+   {
+    "case": 25,
+    "stratum": "single_1_cve",
+    "vendor": "hp",
+    "product": "laserjet_mfp_m439_7zb22a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.123,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 26,
+    "stratum": "single_1_cve",
+    "vendor": "xiongmaitech",
+    "product": "nbd7024h-p",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.505,
+    "example_hits": [
+     "CVE-2022-45045"
+    ],
+    "ok": true
+   },
+   {
+    "case": 27,
+    "stratum": "single_1_cve",
+    "vendor": "ftsafe",
+    "product": "k13",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.415,
+    "example_hits": [
+     "CVE-2021-3011"
+    ],
+    "ok": true
+   },
+   {
+    "case": 28,
+    "stratum": "single_1_cve",
+    "vendor": "hp",
+    "product": "laserjet_mfp_m438_8af44a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.014,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 29,
+    "stratum": "single_1_cve",
+    "vendor": "canon",
+    "product": "mf249dw",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.328,
+    "example_hits": [
+     "CVE-2021-20877"
+    ],
+    "ok": true
+   },
+   {
+    "case": 30,
+    "stratum": "single_1_cve",
+    "vendor": "xiongmaitech",
+    "product": "nbd7804r-fw",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.014,
+    "example_hits": [
+     "CVE-2022-45045"
+    ],
+    "ok": true
+   },
+   {
+    "case": 31,
+    "stratum": "single_1_cve",
+    "vendor": "amd",
+    "product": "epyc_7413",
+    "n_expected": 2,
+    "n_returned": 2,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.728,
+    "example_hits": [
+     "CVE-2021-26311",
+     "CVE-2023-20583"
+    ],
+    "ok": true
+   },
+   {
+    "case": 32,
+    "stratum": "single_1_cve",
+    "vendor": "xiongmaitech",
+    "product": "nbd8008t-q",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.132,
+    "example_hits": [
+     "CVE-2022-45045"
+    ],
+    "ok": true
+   },
+   {
+    "case": 33,
+    "stratum": "single_1_cve",
+    "vendor": "intel",
+    "product": "atom_x5-z8500",
+    "n_expected": 2,
+    "n_returned": 2,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.332,
+    "example_hits": [
+     "CVE-2022-0002",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 34,
+    "stratum": "single_1_cve",
+    "vendor": "samsung",
+    "product": "xpress_sl-m2675_ss336a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.017,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 35,
+    "stratum": "single_1_cve",
+    "vendor": "samsung",
+    "product": "proxpress_sl-m4580_ss401a",
+    "n_expected": 1,
+    "n_returned": 1,
+    "n_strong": 1,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 1
+    },
+    "first_query_ms": 0.106,
+    "example_hits": [
+     "CVE-2021-3438"
+    ],
+    "ok": true
+   },
+   {
+    "case": 36,
+    "stratum": "few_2_5",
+    "vendor": "nvidia",
+    "product": "nvidia_t4",
+    "n_expected": 5,
+    "n_returned": 5,
+    "n_strong": 5,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 5
+    },
+    "first_query_ms": 0.923,
+    "example_hits": [
+     "CVE-2021-1088",
+     "CVE-2021-1105",
+     "CVE-2021-23219",
+     "CVE-2021-34399",
+     "CVE-2021-34400"
+    ],
+    "ok": true
+   },
+   {
+    "case": 37,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "core_i5-12600kf",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.233,
+    "example_hits": [
+     "CVE-2022-0001",
+     "CVE-2022-0002",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 38,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "pentium_gold_4425y",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.22,
+    "example_hits": [
+     "CVE-2021-33150",
+     "CVE-2021-0127",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 39,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "xeon_gold_6354",
+    "n_expected": 6,
+    "n_returned": 6,
+    "n_strong": 5,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 5,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.544,
+    "example_hits": [
+     "CVE-2021-0157",
+     "CVE-2021-0158",
+     "CVE-2022-0001",
+     "CVE-2022-0002",
+     "CVE-2021-0127"
+    ],
+    "ok": true
+   },
+   {
+    "case": 40,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "xeon_gold_6338t",
+    "n_expected": 6,
+    "n_returned": 6,
+    "n_strong": 5,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 5,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.124,
+    "example_hits": [
+     "CVE-2021-0157",
+     "CVE-2021-0158",
+     "CVE-2022-0001",
+     "CVE-2022-0002",
+     "CVE-2021-0127"
+    ],
+    "ok": true
+   },
+   {
+    "case": 41,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "xeon_e5-2418l_v3",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.218,
+    "example_hits": [
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 42,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "xeon_e3-1225_v5",
+    "n_expected": 4,
+    "n_returned": 4,
+    "n_strong": 3,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 3,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.342,
+    "example_hits": [
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2021-0127",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 43,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "xeon_e3_1235l_v5",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.217,
+    "example_hits": [
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 44,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "core_i5-12500h",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.03,
+    "example_hits": [
+     "CVE-2022-0001",
+     "CVE-2022-0002",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 45,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "core_i5-12450h",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.021,
+    "example_hits": [
+     "CVE-2022-0001",
+     "CVE-2022-0002",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 46,
+    "stratum": "few_2_5",
+    "vendor": "arm",
+    "product": "cortex-a72",
+    "n_expected": 2,
+    "n_returned": 2,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2
+    },
+    "first_query_ms": 0.238,
+    "example_hits": [
+     "CVE-2021-26313",
+     "CVE-2021-26314"
+    ],
+    "ok": true
+   },
+   {
+    "case": 47,
+    "stratum": "few_2_5",
+    "vendor": "schneider-electric",
+    "product": "plc_simulator_for_ecostruxure_process_expert",
+    "n_expected": 4,
+    "n_returned": 4,
+    "n_strong": 4,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 4
+    },
+    "first_query_ms": 0.735,
+    "example_hits": [
+     "CVE-2021-22792",
+     "CVE-2021-22789",
+     "CVE-2021-22790",
+     "CVE-2021-22791"
+    ],
+    "ok": true
+   },
+   {
+    "case": 48,
+    "stratum": "few_2_5",
+    "vendor": "schneider-electric",
+    "product": "modicon_m580_bmeh582040s",
+    "n_expected": 4,
+    "n_returned": 4,
+    "n_strong": 4,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 4
+    },
+    "first_query_ms": 0.21,
+    "example_hits": [
+     "CVE-2021-22792",
+     "CVE-2021-22789",
+     "CVE-2021-22790",
+     "CVE-2021-22791"
+    ],
+    "ok": true
+   },
+   {
+    "case": 49,
+    "stratum": "few_2_5",
+    "vendor": "intel",
+    "product": "xeon_gold_6122",
+    "n_expected": 3,
+    "n_returned": 3,
+    "n_strong": 2,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 2,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.22,
+    "example_hits": [
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2022-24436"
+    ],
+    "ok": true
+   },
+   {
+    "case": 50,
+    "stratum": "many_6plus",
+    "vendor": "netapp",
+    "product": "h300s",
+    "n_expected": 24,
+    "n_returned": 24,
+    "n_strong": 24,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 24
+    },
+    "first_query_ms": 4.306,
+    "example_hits": [
+     "CVE-2023-32254",
+     "CVE-2023-38427",
+     "CVE-2023-38426",
+     "CVE-2023-38428",
+     "CVE-2023-38430"
+    ],
+    "ok": true
+   },
+   {
+    "case": 51,
+    "stratum": "many_6plus",
+    "vendor": "netapp",
+    "product": "h500s",
+    "n_expected": 24,
+    "n_returned": 24,
+    "n_strong": 24,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 24
+    },
+    "first_query_ms": 0.114,
+    "example_hits": [
+     "CVE-2023-32254",
+     "CVE-2023-38427",
+     "CVE-2023-38426",
+     "CVE-2023-38428",
+     "CVE-2023-38430"
+    ],
+    "ok": true
+   },
+   {
+    "case": 52,
+    "stratum": "many_6plus",
+    "vendor": "netapp",
+    "product": "h700s",
+    "n_expected": 24,
+    "n_returned": 24,
+    "n_strong": 24,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 24
+    },
+    "first_query_ms": 0.116,
+    "example_hits": [
+     "CVE-2023-32254",
+     "CVE-2023-38427",
+     "CVE-2023-38426",
+     "CVE-2023-38428",
+     "CVE-2023-38430"
+    ],
+    "ok": true
+   },
+   {
+    "case": 53,
+    "stratum": "many_6plus",
+    "vendor": "netapp",
+    "product": "h410s",
+    "n_expected": 24,
+    "n_returned": 24,
+    "n_strong": 24,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 24
+    },
+    "first_query_ms": 0.104,
+    "example_hits": [
+     "CVE-2023-32254",
+     "CVE-2023-38427",
+     "CVE-2023-38426",
+     "CVE-2023-38428",
+     "CVE-2023-38430"
+    ],
+    "ok": true
+   },
+   {
+    "case": 54,
+    "stratum": "many_6plus",
+    "vendor": "intel",
+    "product": "core_i7-10700k",
+    "n_expected": 19,
+    "n_returned": 19,
+    "n_strong": 18,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 18,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 2.011,
+    "example_hits": [
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-33150",
+     "CVE-2021-0144",
+     "CVE-2021-0114"
+    ],
+    "ok": true
+   },
+   {
+    "case": 55,
+    "stratum": "many_6plus",
+    "vendor": "intel",
+    "product": "core_i7-11800h",
+    "n_expected": 19,
+    "n_returned": 19,
+    "n_strong": 18,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 18,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 1.405,
+    "example_hits": [
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-33150",
+     "CVE-2021-0144",
+     "CVE-2021-0114"
+    ],
+    "ok": true
+   },
+   {
+    "case": 56,
+    "stratum": "many_6plus",
+    "vendor": "intel",
+    "product": "core_i5-1155g7",
+    "n_expected": 19,
+    "n_returned": 19,
+    "n_strong": 18,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 18,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 2.143,
+    "example_hits": [
+     "CVE-2023-23583",
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-33150",
+     "CVE-2021-0144"
+    ],
+    "ok": true
+   },
+   {
+    "case": 57,
+    "stratum": "many_6plus",
+    "vendor": "intel",
+    "product": "core_i5-11320h",
+    "n_expected": 19,
+    "n_returned": 19,
+    "n_strong": 18,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 18,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.766,
+    "example_hits": [
+     "CVE-2023-23583",
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-33150",
+     "CVE-2021-0144"
+    ],
+    "ok": true
+   },
+   {
+    "case": 58,
+    "stratum": "many_6plus",
+    "vendor": "intel",
+    "product": "core_i5-11260h",
+    "n_expected": 18,
+    "n_returned": 18,
+    "n_strong": 17,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 17,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 0.081,
+    "example_hits": [
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-33150",
+     "CVE-2021-0144",
+     "CVE-2021-0114"
+    ],
+    "ok": true
+   },
+   {
+    "case": 59,
+    "stratum": "complement",
+    "vendor": "nvidia",
+    "product": "jetson_nano",
+    "n_expected": 8,
+    "n_returned": 8,
+    "n_strong": 8,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 8
+    },
+    "first_query_ms": 0.642,
+    "example_hits": [
+     "CVE-2021-23201",
+     "CVE-2021-23217",
+     "CVE-2021-1088",
+     "CVE-2021-1105",
+     "CVE-2021-1125"
+    ],
+    "ok": true
+   },
+   {
+    "case": 60,
+    "stratum": "complement",
+    "vendor": "intel",
+    "product": "core_i3-9350k",
+    "n_expected": 12,
+    "n_returned": 12,
+    "n_strong": 11,
+    "false_negatives": [],
+    "false_positives": [],
+    "rejected_excluded": [],
+    "rejected_in_source": [],
+    "unresolved_returned": 0,
+    "basis": {
+     "exact_product": 11,
+     "vendor_wildcard": 1
+    },
+    "first_query_ms": 1.142,
+    "example_hits": [
+     "CVE-2021-0091",
+     "CVE-2021-0099",
+     "CVE-2021-0144",
+     "CVE-2021-0114",
+     "CVE-2021-0103"
+    ],
+    "ok": true
+   }
+  ],
+  "n_cases": 60
+ },
+ "composition": [
+  {
+   "strate": "vendeurs_du_corpus",
+   "quota": 8,
+   "retenus": 8
+  },
+  {
+   "strate": "vendor_wildcard_owed",
+   "quota": 4,
+   "retenus": 4
+  },
+  {
+   "strate": "version_bounded",
+   "quota": 8,
+   "retenus": 8
+  },
+  {
+   "strate": "control_zero_cve",
+   "quota": 3,
+   "retenus": 3
+  },
+  {
+   "strate": "single_1_cve",
+   "quota": 20,
+   "retenus": 12
+  },
+  {
+   "strate": "few_2_5",
+   "quota": 15,
+   "retenus": 14
+  },
+  {
+   "strate": "many_6plus",
+   "quota": 10,
+   "retenus": 9
+  },
+  {
+   "strate": "complement",
+   "quota": 60,
+   "retenus": 2
+  }
+ ],
+ "verdicts": {
+  "G1_sans_doublon": true,
+  "G1_zero_faux_negatif": true,
+  "G1_p95_sous_cible": true,
+  "G1_60_cas": true
+ }
+}

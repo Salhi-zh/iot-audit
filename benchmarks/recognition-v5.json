@@ -1,0 +1,468 @@
+{
+ "_note": "Écart du run « v5 » par rapport à la référence gelée v4.",
+ "tag": "v5",
+ "baseline": "/home/alex/iot-audit/evidence/2026-09-15/corpus/expanded/predictions-v4-shard{0}.json",
+ "variant": "evidence/2026-09-29/recognition-v5/predictions.json",
+ "criterion_note": "A = égalité stricte (critère publié du contrat) ; P = séparateur neutralisé (tiret/souligné = espace)",
+ "image": {
+  "baseline": {
+   "brand": {
+    "k": 46,
+    "n": 144,
+    "rate": 0.3194444444444444,
+    "ci95": [
+     0.2488,
+     0.3994
+    ]
+   },
+   "model_A": {
+    "k": 64,
+    "n": 144,
+    "rate": 0.4444444444444444,
+    "ci95": [
+     0.3658,
+     0.526
+    ]
+   },
+   "model_P": {
+    "k": 79,
+    "n": 144,
+    "rate": 0.5486111111111112,
+    "ci95": [
+     0.4671,
+     0.6276
+    ]
+   },
+   "category": {
+    "k": 122,
+    "n": 144,
+    "rate": 0.8472222222222222,
+    "ci95": [
+     0.7795,
+     0.8969
+    ]
+   },
+   "brand_and_model": {
+    "k": 19,
+    "n": 144,
+    "rate": 0.13194444444444445,
+    "ci95": [
+     0.0861,
+     0.1969
+    ]
+   }
+  },
+  "variante": {
+   "brand": {
+    "k": 52,
+    "n": 144,
+    "rate": 0.3611111111111111,
+    "ci95": [
+     0.2872,
+     0.4422
+    ]
+   },
+   "model_A": {
+    "k": 65,
+    "n": 144,
+    "rate": 0.4513888888888889,
+    "ci95": [
+     0.3724,
+     0.5329
+    ]
+   },
+   "model_P": {
+    "k": 81,
+    "n": 144,
+    "rate": 0.5625,
+    "ci95": [
+     0.4809,
+     0.6409
+    ]
+   },
+   "category": {
+    "k": 123,
+    "n": 144,
+    "rate": 0.8541666666666666,
+    "ci95": [
+     0.7873,
+     0.9026
+    ]
+   },
+   "brand_and_model": {
+    "k": 22,
+    "n": 144,
+    "rate": 0.1527777777777778,
+    "ci95": [
+     0.1031,
+     0.2205
+    ]
+   }
+  },
+  "brand_and_model_P": {
+   "baseline": {
+    "k": 31,
+    "n": 144,
+    "rate": 0.2152777777777778,
+    "ci95": [
+     0.156,
+     0.2893
+    ]
+   },
+   "variante": {
+    "k": 37,
+    "n": 144,
+    "rate": 0.2569444444444444,
+    "ci95": [
+     0.1925,
+     0.334
+    ]
+   }
+  }
+ },
+ "objet": {
+  "baseline": {
+   "n_objets": 48,
+   "source": "iot_audit.corpus.metrics",
+   "conservative": {
+    "k": 10,
+    "n": 48,
+    "rate": 0.20833333333333334,
+    "ci95": [
+     0.1173,
+     0.3426
+    ],
+    "verdicts": {
+     "brand_no_category_ok": 17,
+     "exact": 10,
+     "faux": 12,
+     "brand_ok_model_no": 9
+    }
+   },
+   "answered": {
+    "k": 15,
+    "n": 48,
+    "rate": 0.3125,
+    "ci95": [
+     0.1995,
+     0.4533
+    ],
+    "verdicts": {
+     "exact": 15,
+     "brand_no_category_ok": 11,
+     "brand_ok_model_no": 10,
+     "faux": 12
+    }
+   },
+   "agregation_first": {
+    "k": 11,
+    "n": 48,
+    "rate": 0.22916666666666666,
+    "ci95": [
+     0.1331,
+     0.3654
+    ]
+   },
+   "agregation_modal_tuple": {
+    "k": 9,
+    "n": 48,
+    "rate": 0.1875,
+    "ci95": [
+     0.1019,
+     0.3194
+    ]
+   },
+   "agregation_brand_then_model": {
+    "k": 9,
+    "n": 48,
+    "rate": 0.1875,
+    "ci95": [
+     0.1019,
+     0.3194
+    ]
+   },
+   "agregation_basis_preferred": {
+    "k": 12,
+    "n": 48,
+    "rate": 0.25,
+    "ci95": [
+     0.1492,
+     0.3878
+    ]
+   },
+   "agregation_oracle_any": {
+    "k": 17,
+    "n": 48,
+    "rate": 0.3541666666666667,
+    "ci95": [
+     0.2343,
+     0.4956
+    ]
+   },
+   "agregation_all_images": {
+    "k": 8,
+    "n": 48,
+    "rate": 0.16666666666666666,
+    "ci95": [
+     0.087,
+     0.2958
+    ]
+   },
+   "marque_seule_modal": {
+    "k": 19,
+    "n": 48,
+    "rate": 0.3958333333333333,
+    "ci95": [
+     0.2702,
+     0.5369
+    ]
+   },
+   "categorie_seule_modal": {
+    "k": 36,
+    "n": 48,
+    "rate": 0.75,
+    "ci95": [
+     0.6122,
+     0.8508
+    ]
+   }
+  },
+  "variante": {
+   "n_objets": 48,
+   "source": "iot_audit.corpus.metrics",
+   "conservative": {
+    "k": 11,
+    "n": 48,
+    "rate": 0.22916666666666666,
+    "ci95": [
+     0.1331,
+     0.3654
+    ],
+    "verdicts": {
+     "brand_no_category_ok": 16,
+     "exact": 11,
+     "faux": 11,
+     "brand_ok_model_no": 10
+    }
+   },
+   "answered": {
+    "k": 15,
+    "n": 48,
+    "rate": 0.3125,
+    "ci95": [
+     0.1995,
+     0.4533
+    ],
+    "verdicts": {
+     "exact": 15,
+     "brand_no_category_ok": 11,
+     "brand_ok_model_no": 11,
+     "faux": 11
+    }
+   },
+   "agregation_first": {
+    "k": 13,
+    "n": 48,
+    "rate": 0.2708333333333333,
+    "ci95": [
+     0.1657,
+     0.41
+    ]
+   },
+   "agregation_modal_tuple": {
+    "k": 10,
+    "n": 48,
+    "rate": 0.20833333333333334,
+    "ci95": [
+     0.1173,
+     0.3426
+    ]
+   },
+   "agregation_brand_then_model": {
+    "k": 10,
+    "n": 48,
+    "rate": 0.20833333333333334,
+    "ci95": [
+     0.1173,
+     0.3426
+    ]
+   },
+   "agregation_basis_preferred": {
+    "k": 15,
+    "n": 48,
+    "rate": 0.3125,
+    "ci95": [
+     0.1995,
+     0.4533
+    ]
+   },
+   "agregation_oracle_any": {
+    "k": 19,
+    "n": 48,
+    "rate": 0.3958333333333333,
+    "ci95": [
+     0.2702,
+     0.5369
+    ]
+   },
+   "agregation_all_images": {
+    "k": 8,
+    "n": 48,
+    "rate": 0.16666666666666666,
+    "ci95": [
+     0.087,
+     0.2958
+    ]
+   },
+   "marque_seule_modal": {
+    "k": 21,
+    "n": 48,
+    "rate": 0.4375,
+    "ci95": [
+     0.307,
+     0.5773
+    ]
+   },
+   "categorie_seule_modal": {
+    "k": 37,
+    "n": 48,
+    "rate": 0.7708333333333334,
+    "ci95": [
+     0.6346,
+     0.8669
+    ]
+   }
+  }
+ },
+ "decoupage_gele": {
+  "train": {
+   "n": 23,
+   "baseline": 6,
+   "variante": 6
+  },
+  "eval": {
+   "n": 25,
+   "baseline": 4,
+   "variante": 5
+  }
+ },
+ "effets_de_bord": {
+  "baseline": {
+   "marque_non_vide": {
+    "k": 57,
+    "n": 144,
+    "rate": 0.3958333333333333,
+    "ci95": [
+     0.3197,
+     0.4774
+    ]
+   },
+   "marque_juste": {
+    "k": 46,
+    "n": 144,
+    "rate": 0.3194444444444444,
+    "ci95": [
+     0.2488,
+     0.3994
+    ]
+   },
+   "marque_FAUSSE": {
+    "k": 11,
+    "n": 144,
+    "rate": 0.0763888888888889,
+    "ci95": [
+     0.0432,
+     0.1316
+    ]
+   },
+   "modele_vide": {
+    "k": 2,
+    "n": 144,
+    "rate": 0.013888888888888888,
+    "ci95": [
+     0.0038,
+     0.0492
+    ]
+   },
+   "precision_marque": 0.807
+  },
+  "variante": {
+   "marque_non_vide": {
+    "k": 66,
+    "n": 144,
+    "rate": 0.4583333333333333,
+    "ci95": [
+     0.3791,
+     0.5397
+    ]
+   },
+   "marque_juste": {
+    "k": 52,
+    "n": 144,
+    "rate": 0.3611111111111111,
+    "ci95": [
+     0.2872,
+     0.4422
+    ]
+   },
+   "marque_FAUSSE": {
+    "k": 14,
+    "n": 144,
+    "rate": 0.09722222222222222,
+    "ci95": [
+     0.0588,
+     0.1566
+    ]
+   },
+   "modele_vide": {
+    "k": 4,
+    "n": 144,
+    "rate": 0.027777777777777776,
+    "ci95": [
+     0.0109,
+     0.0692
+    ]
+   },
+   "precision_marque": 0.7879
+  }
+ },
+ "images_changees": 45,
+ "objets_gagnes": [
+  "zyxel__p_870ha",
+  "zyxel__p_872h"
+ ],
+ "objets_perdus": [
+  "mikrotik__lte_5g"
+ ],
+ "details_objets_gagnes": [
+  {
+   "object_id": "zyxel__p_870ha",
+   "verite": "zyxel / p 870ha",
+   "baseline": [
+    "",
+    "p-870ha"
+   ],
+   "variante": [
+    "zyxel",
+    "p-870ha"
+   ]
+  },
+  {
+   "object_id": "zyxel__p_872h",
+   "verite": "zyxel / p 872h",
+   "baseline": [
+    "",
+    "p-b721h"
+   ],
+   "variante": [
+    "zyxel",
+    "p-872h"
+   ]
+  }
+ ],
+ "_verdict": {
+  "gagne_des_objets": true,
+  "gagne_sur_eval": true,
+  "n_pertes": 1
+ }
+}
